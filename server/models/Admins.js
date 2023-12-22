@@ -1,0 +1,48 @@
+import mongoose from "mongoose";
+
+const projectSchema = new mongoose.Schema({
+  uid:{
+    type:String
+  },
+  projectName: { type: String },
+  description: { type: String },
+  status: { type: String },
+  createdBy: { type: String },
+  assignedTo: { type: String },
+  startDate: { type: String },
+  endDate: { type: String },
+},{
+  timestamps:true
+});
+
+const adminSchema = new mongoose.Schema({
+  uid:{
+    type:String
+  },
+  fullName: {
+    type: String
+  },
+  displayName: {
+    type: String
+  },
+  email: {
+    type: String
+  },
+  phone:{
+    type: String
+  },
+  role: {
+    type: String
+  },
+  title: {
+    type: String
+  },
+  password: {
+    type: String
+  },
+  projects: [projectSchema],
+});
+
+const Admin = new mongoose.model("Admin", adminSchema, "admins");
+
+export default Admin;
