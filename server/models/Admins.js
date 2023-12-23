@@ -41,6 +41,25 @@ const adminSchema = new mongoose.Schema({
     type: String
   },
   projects: [projectSchema],
+
+  userverified: {
+    email: {
+      type: Boolean,
+      default: false,
+    },
+    phone: {
+      type: Boolean,
+      default: false,
+    }
+  },
+  userverifytoken: {
+    email: {
+      type: String,
+    },
+    phone: {
+      type: String,
+    }
+  }
 });
 
 const Admin = new mongoose.model("Admin", adminSchema, "admins");

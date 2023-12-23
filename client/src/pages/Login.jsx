@@ -5,11 +5,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
-import { UserContext } from '../../utils/UserContext.jsx';
 
 const Login = () => {
-  const { setUserId, setAdminId } = useContext(UserContext);
-  const navigate = useNavigate();
+
+  // const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -23,36 +22,42 @@ const Login = () => {
 
   const postUserLogin = async () => {
     try {
-      const response = await axios.post('http://192.168.0.99:5000/user/login', {
+      const response = await axios.post('http://192.168.0.99:5000/public/user/login', {
         email,
         password,
       });
 
-      console.log(response.data.user.uid);
-      const userId = response.data.user.uid;
-      setUserId(userId);
+      const { user } = response.data
+      const { jwtsignToken } = response.data
+      // console.log(user);
+      localStorage.setItem("token", jwtsignToken)
+      localStorage.setItem("users", JSON.stringify(user))
+
       const successMsg = response.data.msg;
+      
 
       return successMsg
     } catch (error) {
       const errorMessage = error.response?.data?.msg || 'An error occurred';
       setErrors(errorMessage);
+      console.log(error);
     }
   };
 
   const postAdminLogin = async () => {
     try {
-      const response = await axios.post('http://192.168.0.99:5000/admin/login', {
+      const response = await axios.post('http://192.168.0.99:5000/public/admin/login', {
         email,
         password,
       });
+      const { admin } = response.data
+      localStorage.setItem("admins", JSON.stringify(admin))
+
+      const { jwtsignToken } = response.data
+      localStorage.setItem("token", jwtsignToken)
 
       const successMsg = response.data.msg;
-
-      const adminId = response.data.admin.uid;
-      setAdminId(adminId);
-      console.log(adminId);
-
+      console.log(successMsg);
       return successMsg;
     } catch (error) {
       const errorMessage = error.response?.data?.msg || 'An error occurred';
@@ -70,11 +75,15 @@ const Login = () => {
       successMsg = await postAdminLogin();
     }
     setMsg(successMsg)
+    console.log(userType);
+    console.log(successMsg);
     if (successMsg) {
       toast.success(successMsg);
-      setTimeout(() => {
-        navigate('/');
-      }, 4000);
+      setTimeout(()=>{
+        window.location.reload()
+
+      },2000)
+
     }
   };
 

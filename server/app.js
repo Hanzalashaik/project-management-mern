@@ -8,6 +8,9 @@ import cors from "cors"
 // DB Connect in Config Folder
 
 import "./utils/dbConnect.js";
+import authMiddleware from "./Middleware/users/authMiddleware.js";
+import publicUserRouter from "./controllers/public/user.js"
+import publicAdminRouter from "./controllers/public/admin.js"
 
 // Create an instance of Express
 const app = express();
@@ -16,9 +19,11 @@ const PORT = process.env.PORT || config.get("PORT");
 
 // Middleware - Parse incoming requests as JSON
 app.use(express.json());
-
-app.use("/user",userRouter);
-app.use("/admin",adminRouter);
+app.use('/public/user',publicUserRouter)
+app.use('/public/admin',publicAdminRouter)
+app.use(authMiddleware)
+app.use("/user",authMiddleware,userRouter);
+app.use("/admin",authMiddleware,adminRouter);
 
 // Handle 404 errors - Route not found
 app.use((req, res, next) => {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import SideBar from '../components/SideBar.jsx';
-import Table from '../components/Table.jsx';
+import UserTable from '../components/UserTable.jsx';
 import Input from '../components/Input.jsx';
 import EditTable from './EditTable.jsx';
 
@@ -20,11 +20,12 @@ export default function User() {
         setProjectIdCounter(projectIdCounter + 1);
         setShowModal(false);
     };
-    
+
     function updateTask(updateProject) {
         setUpdateProject(updateProject);
         console.log(changedProject);
     }
+
 
 
 
@@ -39,9 +40,9 @@ export default function User() {
                     </button>
                 </div>
                 {showModal && <Input onAddProject={addProject} setShowModal={setShowModal} />}
-                <Table tableData={projects} updatedData={UpdateProject} edit={<EditTable onupdate={updateTask} onsubmit={updateTask} />} />
+                <UserTable tableData={projects} />
             </div>
         </div>
     );
-    
+
 }

@@ -1,68 +1,54 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FaRegEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
-import { UserContext } from '../../utils/UserContext.jsx';
 
 export default function Table({ edit }) {
     const [projects, setProjects] = useState([]);
     const [showModal, setShowModal] = useState(false);
-    const { userId, adminId } = useContext(UserContext);
+    const token = localStorage.getItem('token');
+
 
     useEffect(() => {
         async function getProjects() {
             try {
-                let apiUrl = '';
-                // console.log(userId);
+                const user = JSON.parse(localStorage.getItem('users'));
 
-                if (adminId) {
-
-                    apiUrl = `http://192.168.0.99:5000/user/getall/${adminId}/projects`;
-                } else if (userId) {
-
-                    apiUrl = `http://192.168.0.99:5000/user/getall/${userId}/projects`;
-                } else {
-                    throw new Error('Invalid user or admin');
-                }
-
-                const response = await axios.get(apiUrl);
-                console.log(response.data.projects);
+                if(user?.uid){
+                const response = await axios.get(`http://192.168.0.99:5000/user/getall/${user?.uid}/projects`, {
+                    headers: {
+                        'access-token': token
+                    }
+                });
                 setProjects(response.data.projects);
+            }
+
             } catch (error) {
-                console.error('Error fetching data:', error.data);
+                console.error('Error fetching data:', error);
             }
         }
 
         getProjects();
-
     }, []);
 
     async function deleteProject(idToDelete) {
-        console.log(idToDelete);
         try {
-            let apiUrl = '';
-            console.log(userId);
-
-            if (adminId) {
-
-                apiUrl = `http://192.168.0.99:5000/user/delete/${adminId}/${idToDelete}/projects`;
-            } else if (userId) {
-
-                apiUrl = `http://192.168.0.99:5000/user/delete/${userId}/${idToDelete}/projects`;
-            } else {
-                throw new Error('Invalid user or admin');
-            }
-            console.log(apiUrl);
-            const response = await axios.delete(apiUrl)
+            const user = JSON.parse(localStorage.getItem('users'));
+            if(user?.uid){
+            const response = await axios.delete(`http://192.168.0.99:5000/user/delete/${user?.uid}/${idToDelete}/projects`,{
+                headers: {
+                    'access-token': token
+                }
+            });
             console.log(response);
-        } catch (error) {
-
         }
 
-        const updatedProjects = projects.filter((project) => project.uid !== idToDelete);
-        setProjects(updatedProjects);
+            // Update the projects state after deletion
+            setProjects(prevProjects => prevProjects.filter(project => project.uid !== idToDelete));
+        } catch (error) {
+            console.error('Error deleting project:', error);
+        }
     }
-
 
     return (
         <>

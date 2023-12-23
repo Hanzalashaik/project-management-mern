@@ -1,6 +1,6 @@
-import React, { useRef, useContext } from 'react';
+import React, { useEffect, useRef } from 'react';
 import axios from 'axios';
-import { UserContext } from '../../utils/UserContext.jsx';
+
 
 const generateUniqueId = (() => {
     let projectIdCounter = 1; 
@@ -12,7 +12,7 @@ const generateUniqueId = (() => {
     };
 })();
 
-export default function Input({ onAddProject, setShowModal }) {
+export default function Input({ setShowModal }) {
     const projectName = useRef();
     const description = useRef();
     const status = useRef();
@@ -21,7 +21,21 @@ export default function Input({ onAddProject, setShowModal }) {
     const startDate = useRef();
     const endDate = useRef();
 
-    const { userId, adminId } = useContext(UserContext);
+    const user = JSON.parse(localStorage.getItem("users"))
+    const admin = JSON.parse(localStorage.getItem("admins"))
+    const token = localStorage.getItem("token")
+    
+    // try {
+    //     const response = await axios.get("http://192.168.0.99:5000/user/getall",{
+    //     headers:{
+    //       "access-token": token
+    //     }
+    //   });
+    //     console.log("input",response);
+        
+    // } catch (error) {
+    //     console.log(error);
+    // }
 
     async function handleSave(e) {
         e.preventDefault();
@@ -41,21 +55,24 @@ export default function Input({ onAddProject, setShowModal }) {
             let apiUrl = '';
 
 
-            if (adminId) {
+            if (admin?.uid) {
 
-                apiUrl = `http://192.168.0.99:5000/admin/addprojects/${adminId}/projects`;
-            } else if (userId) {
-                apiUrl = `http://192.168.0.99:5000/user/addprojects/${userId}/projects`;
+                apiUrl = `http://192.168.0.99:5000/admin/addprojects/${admin?.uid}/projects`;
+            } else if (user?.uid) {
+                apiUrl = `http://192.168.0.99:5000/user/addprojects/${user?.uid}/projects`;
             } else {
 
                 throw new Error('Invalid user or admin');
             }
 
-            const response = await axios.post(apiUrl, newProject);
+            const response = await axios.post(apiUrl, newProject,{
+                headers:{
+                  "access-token": token
+                }
+              });
 
             console.log(response.data);
 
-            onAddProject(newProject);
 
             projectName.current.value = '';
             description.current.value = '';
@@ -124,6 +141,7 @@ export default function Input({ onAddProject, setShowModal }) {
                                         <option value="Pending">Pending</option>
                                         <option value="Not Started">Not Started</option>
                                         <option value="Cancelled">Cancelled</option>
+                                        <option value="In Progress">In Progress</option>
                                     </select>
                                 </div>
                                 <div className="flex flex-col">

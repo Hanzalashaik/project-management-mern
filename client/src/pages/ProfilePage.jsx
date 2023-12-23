@@ -2,32 +2,38 @@ import React, { useState } from 'react';
 import img from '/profile.jpg';
 import { Link } from 'react-router-dom';
 import axios from "axios"
-import { useEffect, useContext } from 'react';
-import { UserContext } from '../../utils/UserContext.jsx';
+import { useEffect } from 'react';
 
 export default function ProfilePage() {
 
   const [data, setData] = useState('')
-  const { userId, adminId } = useContext(UserContext);
-  // console.log(userId);
+  const user = JSON.parse(localStorage.getItem("users"))
+  const admin = JSON.parse(localStorage.getItem("admins"))
+  const token = localStorage.getItem("token")
+
+
   useEffect(() => {
     async function getProfile() {
       try {
         let apiUrl = '';
         // console.log(userId);
         
-        if (adminId) {
+        if (admin?.uid) {
           
-          apiUrl = `http://192.168.0.99:5000/user/getbyid/${adminId}`;
-        } else if (userId) {
+          apiUrl = `http://192.168.0.99:5000/admin/getbyid/${admin?.uid}`;
+        } else if (user?.uid) {
           
-          apiUrl = `http://192.168.0.99:5000/user/getbyid/${userId}`;
+          apiUrl = `http://192.168.0.99:5000/user/getbyid/${user?.uid}`;
         } else {
           throw new Error('Invalid user or admin');
         }
         // console.log(apiUrl);
-        const response = await axios.get(apiUrl)
-        // console.log(response.data);
+        const response = await axios.get(apiUrl,{
+          headers: {
+              'access-token': token
+          }
+      })
+        console.log(response.data);
         setData(response.data)
 
       } catch (error) {

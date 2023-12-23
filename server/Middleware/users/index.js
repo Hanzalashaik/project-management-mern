@@ -1,6 +1,6 @@
 import { body, validationResult } from "express-validator";
 
-const userRegisterValidations = () => {
+const RegisterValidations = () => {
   return [
     body("fullName", "First Name is required &&  > 2 char").isLength({
       min: 2,
@@ -9,7 +9,7 @@ const userRegisterValidations = () => {
 
     body("displayName", "Last Name is Required")
       .notEmpty()
-      .isLength({ min: 2, max: 15 })
+      .isLength({ min: 2, max: 25 })
       .withMessage("Length should be <2 and >15"),
 
     body("email", "Should be a Valid Email").isEmail(),
@@ -18,7 +18,7 @@ const userRegisterValidations = () => {
 
     body("title", " title is Required")
       .notEmpty()
-      .isLength({ min: 2, max: 15 })
+      .isLength({ min: 2, max: 25 })
       .withMessage("Length should be <2 and >15"),
     body("password", "Should be a Strong Password")
       .isStrongPassword()
@@ -34,4 +34,4 @@ const errorMiddelware = (req, res, next) => {
   return next();
 };
 
-export { userRegisterValidations, errorMiddelware };
+export { RegisterValidations, errorMiddelware };

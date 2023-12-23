@@ -1,74 +1,7 @@
 import userModel from "../models/Users.js";
 import express from "express";
-import bcrypt from "bcrypt"
-
-
-import {
-  userRegisterValidations,
-  errorMiddelware,
-} from "../Middleware/users/index.js";
 
 const router = express.Router();
-
-//POST USER/ REGISTER USER
-router.post(
-  "/register",
-  userRegisterValidations(),
-  errorMiddelware,
-  async (req, res) => {
-    try {
-      let userData = new userModel(req.body);
-
-      let hashPassword = await bcrypt.hash(userData.password, 10);
-      userData.password = hashPassword
-
-      await userData.save();
-      res.status(200).json({ sucess: true, msg: "User Rgister Successfully" ,userData});
-    } catch (error) {
-      res.status(500).json({ error: "Internal server error" });
-    }
-  }
-);
-
-//Login
-router.post("/login", async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    console.log(password);
-
-    const user = await userModel.findOne({ email });
-    console.log(user);
-
-    if (!user) {
-      return res.status(400).json({ msg: "Please Register" });
-    }
-
-
-    const passwordFound = await bcrypt.compare(password,user.password)
-
-    if (!passwordFound) {
-      return res.status(400).json({ msg: "Incorrect Password" });
-    }
-
-    res.status(201).json({ msg: "Logged In Successfully" ,user });
-
-    // sendSMS({
-    //   body: `Hi ${
-    //     user.fullName
-    //   }, Please click the given link to verify your phone ${config.get(
-    //     "URL"
-    //   )}/user/phone/verify`,
-    //   phonenumber: user.phone,
-    // });
-
-
-
-
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, msg: "Internal Server Error" });
-  }
-});
 
 //GET ALL USER
 router.get("/getall", async (req, res) => {
@@ -325,7 +258,7 @@ router.delete("/deleteall/:userId/projects", async (req, res) => {
     }
 
     user.projects = [];
-    
+
     await user.save(); // Save the updated user object with empty projects array
 
     res.status(200).json({ success: "All projects deleted successfully" });
@@ -334,6 +267,5 @@ router.delete("/deleteall/:userId/projects", async (req, res) => {
     res.status(500).json({ success: "Internal server error" });
   }
 });
-
 
 export default router;

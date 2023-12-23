@@ -35,7 +35,7 @@ export default function EditTable({ onupdate, onsubmit }) {
 
                 apiUrl = `http://192.168.0.99:5000/admin/updatebyid/${adminId}/:projectId/projects`;
             } else if (userId) {
-                apiUrl = `http://192.168.0.99:5000/user//updatebyid/${userId}/:projectId/projects`;
+                apiUrl = `http://192.168.0.99:5000/user/updatebyid/${userId}/:projectId/projects`;
             } else {
 
                 throw new Error('Invalid user or admin');

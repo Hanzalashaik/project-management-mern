@@ -43,8 +43,8 @@ export default function Signup() {
     const selectedRole = roleRef.current.value;
     const endpoint =
       selectedRole === 'admin'
-        ? 'http://192.168.0.99:5000/admin/register'
-        : 'http://192.168.0.99:5000/user/register';
+        ? 'http://192.168.0.99:5000/public/admin/register'
+        : 'http://192.168.0.99:5000/public/user/register';
 
     try {
       const response = await axios.post(endpoint, {
@@ -74,6 +74,7 @@ export default function Signup() {
       if (error.response && error.response.status === 400) {
         const errorMessage = error.response.data.error[0].msg;
         setErrors(errorMessage);
+        console.log(error);
       } else {
         console.log('Server error:', error.message);
       }
@@ -145,7 +146,7 @@ export default function Signup() {
                 Phone:
               </label>
               <input
-                type="number"
+                type="text"
                 id="phone"
                 ref={phoneRef}
                 className="p-2 outline-none rounded text-lg"
