@@ -14,7 +14,7 @@ export default function StatusBar() {
   const token = localStorage.getItem("token")
   const user = JSON.parse(localStorage.getItem("users"))
   const admin = JSON.parse(localStorage.getItem("admins"))
-  console.log(user?.uid)
+  // console.log(user?.uid)
   // console.log(token);
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export default function StatusBar() {
             "access-token": token
           }
         });
-        console.log(response.data.projects);
+        // console.log(response.data.projects);
         setData(response.data.projects);
       } catch (error) {
         console.log(error);
@@ -58,7 +58,7 @@ export default function StatusBar() {
   }
 
   const projectsCount = countProjects(data);
-  console.log(data);
+  // console.log(data);
 
   return (
     <>
@@ -76,7 +76,7 @@ export default function StatusBar() {
 
         <div className='flex flex-col items-center'>
           <FaRegCircleDot className='text-4xl text-blue-700 mb-2' />
-          <h1 className='text-blue-100 text-lg font-semibold'>{projectsCount.inProgress} In progress</h1>
+          <h1 className='text-blue-100 text-lg font-semibold'>{projectsCount.inProgress} In Progress</h1>
         </div>
 
         <div className='flex flex-col items-center'>

@@ -1,69 +1,44 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 export default function ForgetPassword() {
-    const [otp, setOtp] = useState('');
-    const [showNewPassword, setShowNewPassword] = useState(false);
+    const [email, setEmail] = useState('');
 
-    function handleChange(e) {
-        setOtp(e.target.value);
-    }
+    const handleForgetPassword = async (e) => {
+        e.preventDefault();
+        try {
+            try {
+                const userResponse = await axios.post('http://192.168.0.99:5000/public/user/forgot-password', { email });
+                console.log(userResponse);
+            } catch (error) {
+                const adminResponse = await axios.post('http://192.168.0.99:5000/public/admin/forgot-password', { email });
+                console.log(adminResponse);
+            }
+        } catch (error) {
+            console.error(error);
 
-    function handleClick() {
-        setShowNewPassword(true);
-    }
+        }
+    };
 
     return (
         <div className="flex justify-center items-center h-screen bg-stone-400">
             <div className="w-3/4 sm:w-2/4 bg-stone-300 p-8 rounded-lg shadow-md">
-                <form className="flex flex-col space-y-2">
-                    {showNewPassword ? (
-                        <>
+                <form className="flex flex-col space-y-2" onSubmit={handleForgetPassword}>
+                    <h1 className="text-2xl font-semibold mb-4">Forget Password</h1>
+                    <label className="flex">
+                        Email<p className="text-red-800">*</p>
+                    </label>
+                    <input
+                        type="email"
+                        className="p-2 border rounded"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
 
-                            <h1 className="text-2xl font-semibold mb-4">Reset Password</h1>
-                            <div className="flex flex-col space-y-2">
-                                <label className='flex'>New Password<p className='text-red-800'>*</p></label>
-                                <input
-                                    type="password"
-                                    className="p-2 border rounded"
-                                    required
-                                />
-                            </div>
-                            <div className="flex flex-col space-y-2">
-                                <label className='flex'>Re-Type Password<p className='text-red-800'>*</p></label>
-                                <input
-                                    type="password"
-                                    className="p-2 border rounded"
-                                    required
-                                />
-                            </div>
-                            <button onClick={handleClick} className="p-2 bg-green-500 text-white rounded hover:bg-green-600">
-                                Reset Password
-                            </button>
-                        </>
-                    ) : (
-                        <>
-                            <h1 className="text-2xl font-semibold mb-4">Forget Password</h1>
-                            <label className='flex'>Email<p className='text-red-800'>*</p></label>
-                            <input
-                                type="email"
-                                className="p-2 border rounded"
-                                required
-                            />
-                            <label className='flex'>OTP<p className='text-red-800'>*</p></label>
-                            <input
-                                type="number"
-                                className="p-2 border rounded"
-                                required
-                                value={otp}
-                                onChange={(e) => handleChange(e)}
-
-                            />
-                            <button onClick={handleClick} className="p-2 bg-green-500 text-white rounded hover:bg-green-600">
-                                Forget Password
-                            </button>
-                        </>
-                    )}
-
+                    <button type="submit" className="p-2 bg-green-500 text-white rounded hover:bg-green-600">
+                        Forget Password
+                    </button>
                 </form>
             </div>
         </div>

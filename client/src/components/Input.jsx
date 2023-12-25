@@ -1,18 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useRef ,useContext} from 'react';
 import axios from 'axios';
-
-
-const generateUniqueId = (() => {
-    let projectIdCounter = 1; 
-
-    return () => {
-        const uniqueId = projectIdCounter.toString();
-        projectIdCounter++; 
-        return uniqueId;
-    };
-})();
+import { UserContext } from "../../utils/UserContext.jsx"
 
 export default function Input({ setShowModal }) {
+
+    const { count , setCount } = useContext(UserContext);
+
     const projectName = useRef();
     const description = useRef();
     const status = useRef();
@@ -24,24 +17,47 @@ export default function Input({ setShowModal }) {
     const user = JSON.parse(localStorage.getItem("users"))
     const admin = JSON.parse(localStorage.getItem("admins"))
     const token = localStorage.getItem("token")
-    
-    // try {
-    //     const response = await axios.get("http://192.168.0.99:5000/user/getall",{
-    //     headers:{
-    //       "access-token": token
-    //     }
-    //   });
-    //     console.log("input",response);
-        
-    // } catch (error) {
-    //     console.log(error);
-    // }
+
+    const [userfullNames, setUserFullNames] = useState([]);
+    const [adminfullNames, setAdminFullNames] = useState([]);
+
+    async function getAllUsers() {
+        try {
+            const userResponse = await axios.get("http://192.168.0.99:5000/user/getall", {
+                headers: {
+                    "access-token": token
+                }
+            });
+            const AdminResponse = await axios.get("http://192.168.0.99:5000/admin/getall", {
+                headers: {
+                    "access-token": token
+                }
+            });
+            const users = userResponse.data;
+            const admins = AdminResponse.data;
+
+
+            const userfullNames = users.map(user => user.fullName);
+            const adminfullNames = admins.map(admin => admin.fullName);
+
+            setUserFullNames(userfullNames);
+            setAdminFullNames(adminfullNames);
+
+            // console.log("Full Names of Users:", userfullNames);
+            // console.log("Full Names of Admins:", adminfullNames);
+            // console.log("Admin", AdminResponse);
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    getAllUsers()
 
     async function handleSave(e) {
         e.preventDefault();
 
         const newProject = {
-            uid: generateUniqueId(),
+            uid: count+1,
             projectName: projectName.current.value,
             description: description.current.value,
             status: status.current.value,
@@ -65,11 +81,11 @@ export default function Input({ setShowModal }) {
                 throw new Error('Invalid user or admin');
             }
 
-            const response = await axios.post(apiUrl, newProject,{
-                headers:{
-                  "access-token": token
+            const response = await axios.post(apiUrl, newProject, {
+                headers: {
+                    "access-token": token
                 }
-              });
+            });
 
             console.log(response.data);
 
@@ -83,9 +99,9 @@ export default function Input({ setShowModal }) {
             endDate.current.value = '';
 
             handleCloseModal();
+            window.location.reload();
 
 
-            
         } catch (error) {
             console.log(error);
         }
@@ -146,21 +162,41 @@ export default function Input({ setShowModal }) {
                                 </div>
                                 <div className="flex flex-col">
                                     <label className="text-gray-600 mb-1">Created By:</label>
-                                    <input
+                                    <select
                                         className="border rounded-md px-2 py-1 w-full focus:outline-none focus:border-blue-500"
                                         ref={createdBy}
-                                        type="text"
                                         required
-                                    />
+                                    >
+                                        {userfullNames.map((userName, index) => (
+                                            <option key={`user-${index}`} value={userName}>
+                                                {userName}
+                                            </option>
+                                        ))}
+                                        {adminfullNames.map((adminName, index) => (
+                                            <option key={`admin-${index}`} value={adminName}>
+                                                {adminName}
+                                            </option>
+                                        ))}
+                                    </select>
                                 </div>
                                 <div className="flex flex-col">
                                     <label className="text-gray-600 mb-1">Assigned To:</label>
-                                    <input
+                                    <select
                                         className="border rounded-md px-2 py-1 w-full focus:outline-none focus:border-blue-500"
                                         ref={assignedTo}
-                                        type="text"
                                         required
-                                    />
+                                    >
+                                        {userfullNames.map((userName, index) => (
+                                            <option key={`user-${index}`} value={userName}>
+                                                {userName}
+                                            </option>
+                                        ))}
+                                        {adminfullNames.map((adminName, index) => (
+                                            <option key={`admin-${index}`} value={adminName}>
+                                                {adminName}
+                                            </option>
+                                        ))}
+                                    </select>
                                 </div>
                                 <div className="flex flex-col">
                                     <label className="text-gray-600 mb-1">Start Date:</label>

@@ -2,33 +2,11 @@ import React, { useState } from 'react';
 import SideBar from '../components/SideBar.jsx';
 import UserTable from '../components/UserTable.jsx';
 import Input from '../components/Input.jsx';
-import EditTable from './EditTable.jsx';
+
 
 
 export default function User() {
-    const [projects, setProjects] = useState([]);
     const [showModal, setShowModal] = useState(false);
-    const [projectIdCounter, setProjectIdCounter] = useState(1);
-    const [UpdateProject, setUpdateProject] = useState('')
-
-    const addProject = (newProject) => {
-        const projectWithUniqueId = {
-            ...newProject,
-            id: projectIdCounter,
-        };
-        setProjects([...projects, projectWithUniqueId]);
-        setProjectIdCounter(projectIdCounter + 1);
-        setShowModal(false);
-    };
-
-    function updateTask(updateProject) {
-        setUpdateProject(updateProject);
-        console.log(changedProject);
-    }
-
-
-
-
     return (
         <div className='flex'>
             <SideBar />
@@ -39,8 +17,8 @@ export default function User() {
                         + Add
                     </button>
                 </div>
-                {showModal && <Input onAddProject={addProject} setShowModal={setShowModal} />}
-                <UserTable tableData={projects} />
+                {showModal && <Input setShowModal={setShowModal} />}
+                <UserTable />
             </div>
         </div>
     );

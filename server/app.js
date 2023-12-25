@@ -21,13 +21,15 @@ const PORT = process.env.PORT || config.get("PORT");
 app.use(express.json());
 app.use('/public/user',publicUserRouter)
 app.use('/public/admin',publicAdminRouter)
-app.use(authMiddleware)
+
+// app.use(authMiddleware)
+
 app.use("/user",authMiddleware,userRouter);
 app.use("/admin",authMiddleware,adminRouter);
 
 // Handle 404 errors - Route not found
 app.use((req, res, next) => {
-  res.status(404).send("404 - Not Found");
+  res.status(404).send("404 - Route Not Found");
 });
 
 // Handle other errors

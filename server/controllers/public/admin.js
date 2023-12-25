@@ -3,8 +3,8 @@ import bcrypt from "bcrypt";
 import randomString from "../../utils/randomString.js";
 import jwt from "jsonwebtoken";
 import config from "config";
-import CryptoJS from "crypto-js";
 import sendSMS from "../../utils/sendSMS.js";
+import sendMail from "../../utils/sendEmail.js";
 import express from "express";
 import {
   RegisterValidations,
@@ -47,7 +47,7 @@ errorMiddelware, async (req, res) => {
       { expiresIn: "1d" }
     );
 
-    console.log(`${config.get("URL")}/admin/email/verify/${emailToken}`);
+    console.log(`${config.get("URL")}/public/admin/email/verify/${emailToken}`);
 
     // sendSMS({
     //   body: `Hi ${
@@ -55,10 +55,10 @@ errorMiddelware, async (req, res) => {
     //   }, Please click the given link to verify your phone ${config.get(
     //     "URL"
     //   )}/admin/phone/verify/${phoneToken}`,
-    //   phonenumber: userData.phone,
+    //   phonenumber: adminData.phone,
     // });
 
-    console.log(`${config.get("URL")}/admin/phone/verify/${phoneToken}`);
+    console.log(`${config.get("URL")}/public/admin/phone/verify/${phoneToken}`);
 
     await adminData.save();
     res.status(200).json({ sucess: true, msg: "admin Rgister Successfully" });
@@ -162,6 +162,75 @@ router.post("/login", async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, msg: "Internal Server Error" });
+  }
+});
+
+//forget password
+router.post('/forgot-password', async (req, res) => {
+  try {
+    const { email } = req.body;
+    console.log(email);
+
+    const adminData = await adminModel.findOne({ email });
+    console.log(adminData);
+
+    if (!adminData) {
+      return res.status(404).json({ message: 'Admin not found' });
+    }
+
+    const token = Math.random().toString(36).substring(2, 8); // Generate a random token
+
+    await adminModel.updateOne({ email }, { $set: { token } });
+
+    sendMail({
+      subject: 'Password Reset - Your Company',
+      to: adminData.email,
+      body: `
+        Hi ${adminData.fullName},
+        Please <a href="http://localhost:5173/reset-password?token=${token}">click here</a> to reset your password.
+    
+        If you didn't request this, please ignore this email.
+      `,
+    });
+
+    return res.status(200).json({ message: 'Password reset link sent successfully', token });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+// Reset Password Route
+router.post('/reset-password', async (req, res) => {
+  try {
+    const token = req.query.token;
+    const tokenData = await adminModel.findOne({ token });
+
+    if (!tokenData) {
+      return res.status(400).json({ success: false, msg: 'This link has expired or is invalid.' });
+    }
+
+    const password = req.body.password;
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const updatedadminData = await adminModel.findByIdAndUpdate(
+      tokenData._id,
+      { password: hashedPassword, token: '' },
+      { new: true }
+    );
+
+    if (!updatedadminData) {
+      return res.status(500).json({ success: false, msg: 'Failed to reset password.' });
+    }
+
+    res.status(200).json({
+      success: true,
+      msg: 'Password has been reset successfully',
+      adminData: updatedadminData,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, msg: 'Internal Server Error' });
   }
 });
 

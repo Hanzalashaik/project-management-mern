@@ -2,23 +2,11 @@ import React, { useState } from 'react';
 import SideBar from '../components/SideBar.jsx';
 import AdminTable from '../components/AdminTable.jsx';
 import Input from '../components/Input.jsx';
-import EditTable from './EditTable.jsx';
+
+
 
 export default function Admin() {
-    const [projects, setProjects] = useState([]);
     const [showModal, setShowModal] = useState(false);
-    const [projectIdCounter, setProjectIdCounter] = useState(1);
-
-    const addProject = (newProject) => {
-        const projectWithUniqueId = {
-            ...newProject,
-            id: projectIdCounter,
-        };
-        setProjects([...projects, projectWithUniqueId]);
-        setProjectIdCounter(projectIdCounter + 1);
-        setShowModal(false);
-    };
-
     return (
         <div className='flex'>
             <SideBar />
@@ -29,8 +17,8 @@ export default function Admin() {
                         + Add
                     </button>
                 </div>
-                {showModal && <Input onAddProject={addProject} setShowModal={setShowModal} />}
-                <AdminTable tableData={projects}  />
+                {showModal && <Input setShowModal={setShowModal} />}
+                <AdminTable />
             </div>
         </div>
     );

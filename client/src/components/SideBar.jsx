@@ -37,14 +37,14 @@ export default function SideBar() {
                                 Dashboard
                             </Link>
                         </li>
-                        <li>
+                        {user ? <li>
                             <Link
                                 to='/user'
                                 className='text-gray-300 hover:text-white transition duration-300 ease-in-out'
                             >
                                 User
                             </Link>
-                        </li>
+                        </li>:""}
 
                         {user ? "" : <li>
                             <Link

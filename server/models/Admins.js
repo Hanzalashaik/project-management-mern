@@ -4,7 +4,7 @@ const projectSchema = new mongoose.Schema({
   uid:{
     type:String
   },
-  projectName: { type: String },
+  projectName: { type: String, unique: true },
   description: { type: String },
   status: { type: String },
   createdBy: { type: String },
@@ -59,6 +59,10 @@ const adminSchema = new mongoose.Schema({
     phone: {
       type: String,
     }
+  },
+  token:{
+    type:String,
+    default:''
   }
 });
 

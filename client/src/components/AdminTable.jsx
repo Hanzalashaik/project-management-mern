@@ -1,27 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect ,useContext } from 'react';
 import axios from 'axios';
 import { FaRegEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
+import EditTable from '../pages/EditTable';
+import { UserContext } from "../../utils/UserContext.jsx"
 
-export default function Table({ edit }) {
+
+export default function Table() {
     const [projects, setProjects] = useState([]);
     const [showModal, setShowModal] = useState(false);
+    const [projectUid, setProjectUid] = useState('');
     const token = localStorage.getItem('token');
-
-
+    const { count , setCount } = useContext(UserContext);
+    
     useEffect(() => {
         async function getProjects() {
             try {
                 const admin = JSON.parse(localStorage.getItem('admins'));
-
-                if(admin?.uid){
-                const response = await axios.get(`http://192.168.0.99:5000/admin/getall/${admin?.uid}/projects`, {
-                    headers: {
-                        'access-token': token
-                    }
-                });
-                setProjects(response.data.projects);
-            }
+                // console.log(admin);
+                
+                if (admin?.uid) {
+                    const response = await axios.get(`http://192.168.0.99:5000/admin/getall/${admin?.uid}/projects`, {
+                        headers: {
+                            'access-token': token
+                        }
+                    });
+                    setProjects(response.data.projects);
+                    // console.log(response);
+                    let projectCount = response.data.projects
+                    let count1 = projectCount.length
+                    setCount(count1)
+                    // console.log(count1);
+                    console.log(count);
+                }
 
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -31,24 +42,35 @@ export default function Table({ edit }) {
         getProjects();
     }, []);
 
+    
+
     async function deleteProject(idToDelete) {
         try {
             const admin = JSON.parse(localStorage.getItem('admins'));
-            if(admin?.uid){
-            const response = await axios.delete(`http://192.168.0.99:5000/admin/delete/${admin?.uid}/${idToDelete}/projects`,{
-                headers: {
-                    'access-token': token
-                }
-            });
-            console.log(response);
-        }
+            if (admin?.uid) {
+                const response = await axios.delete(`http://192.168.0.99:5000/user/delete/${admin?.uid}/${idToDelete}/projects`, {
+                    headers: {
+                        'access-token': token
+                    }
+                });
+                // console.log(response);
+            }
 
-            // Update the projects state after deletion
+
             setProjects(prevProjects => prevProjects.filter(project => project.uid !== idToDelete));
         } catch (error) {
             console.error('Error deleting project:', error);
         }
     }
+
+    function editProject(e,id){
+        e.preventDefault();
+        setShowModal(true)
+        setProjectUid(id)
+        console.log(id);
+    }
+
+
 
     return (
         <>
@@ -67,9 +89,9 @@ export default function Table({ edit }) {
                     </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                    {Array.isArray(projects) && projects.map((project) => (
-                        <tr key={project.uid}>
-                            <td className="px-2 py-4 whitespace-nowrap">{project.uid}</td>
+                    {Array.isArray(projects) && projects.map((project, index) => (
+                        <tr key={index + 1}>
+                            <td className="px-2 py-4 whitespace-nowrap">{index+1}</td>
                             <td className="px-2 py-4 whitespace-nowrap">{project.projectName}</td>
                             <td className="px-2 py-4 whitespace-nowrap">{project.description}</td>
                             <td className="px-2 py-4 whitespace-nowrap">{project.status}</td>
@@ -78,14 +100,16 @@ export default function Table({ edit }) {
                             <td className="px-2 py-4 whitespace-nowrap">{project.startDate}</td>
                             <td className="px-2 py-4 whitespace-nowrap">{project.endDate}</td>
                             <td className="px-2 py-4 whitespace-nowrap flex gap-2">
-                                <button onClick={() => setShowModal(true)} className='text-orange-500 cursor-pointer'><FaRegEdit /></button>
-                                {showModal && edit}
+                                <button onClick={(e)=>editProject(e,project.uid)} className='text-orange-500 cursor-pointer'><FaRegEdit /></button>
+                               
                                 <button onClick={() => deleteProject(project.uid)} className='text-red-700 cursor-pointer'><MdDelete /></button>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
+            {showModal && <EditTable projectUid={projectUid} setShowModal={setShowModal} />}
         </>
     );
 }
+

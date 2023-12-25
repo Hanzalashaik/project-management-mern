@@ -1,39 +1,37 @@
-import nodelmailer from "nodemailer";
-import config from "config"
+import nodemailer from "nodemailer";
+// import config from "config"
 // import fs from "fs/promises";
 
-const { HOST, AUTH, PORT } = config.get("EMAIL_SMTP");
+// const { HOST, AUTH, PORT } = config.get("EMAIL_SMTP");
 
 async function sendMail(emailData) {
-    try {
-        let transporter = nodelmailer.createTransport({
-
-            host: HOST,
-            port: PORT,
-            secure: true,
-            auth: {
-                user: AUTH["USER"],
-                pass: AUTH["PASS"]
-            }
-        });
-
-        let info = await transporter.sendMail({
-            from: `"Test Solutions" <${AUTH["USER"]}>`,
-            subject: emailData.subject, // Subject line
-            to: emailData.to,
-            html: emailData.body
-        });
-        console.log("EMAIL SENT");
-        // await fs.appendFile("logs/emaillogs.txt", `${info.messageId}\n`);
-    } catch (error) {
-        console.log(error);
-    }
+  try {
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.ethereal.email',
+      port:587,
+      auth: {
+        user: 'elise27@ethereal.email',
+        pass: 'uNF7wNvChwQPGnfsKd'
+      },
+    });
+    let info = await transporter.sendMail({
+      from: `"Test Solutions" <shaik@gmail.com>`,
+      subject: emailData.subject, // Subject line
+      to: emailData.to,
+      html: emailData.body,
+    });
+    console.log("EMAIL SENT");
+    console.log("Message sent: %s", info.messageId);
+    // await fs.appendFile("logs/emaillogs.txt", `${info.messageId}\n`);
+  } catch (error) {
+    console.log("err",error);
+  }
 }
 
 // sendMail()
 // sendMail({
 //     subject: "User Account Verification - Test",
-//     to: "xxxxxx@gmail.com",
-//     body: "Testing "
+//     to: userData,
+//     body: randonString()
 // });
 export default sendMail;

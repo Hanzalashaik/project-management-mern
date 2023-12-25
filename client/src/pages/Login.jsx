@@ -34,7 +34,7 @@ const Login = () => {
       localStorage.setItem("users", JSON.stringify(user))
 
       const successMsg = response.data.msg;
-      
+
 
       return successMsg
     } catch (error) {
@@ -79,10 +79,10 @@ const Login = () => {
     console.log(successMsg);
     if (successMsg) {
       toast.success(successMsg);
-      setTimeout(()=>{
+      setTimeout(() => {
         window.location.reload()
 
-      },2000)
+      }, 2000)
 
     }
   };
