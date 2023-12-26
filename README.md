@@ -4,13 +4,13 @@
 This is a full-stack project management web application developed using the MERN stack (MongoDB, Express.js, React.js, Node.js). The app allows users to register, login, and manage projects. It includes authentication using JWT tokens for both users and admins.
 
 ## Screenshoot
-### Login Page
+### 1)Login Page
 ![Image](https://github.com/Hanzalashaik/project-management-mern/blob/main/client/public/login%20.png "Image")
-### DashBoard
+### 2}DashBoard
 ![Image](https://github.com/Hanzalashaik/project-management-mern/blob/main/client/public/dashboard.png "Image")
-### User Page
+### 3}User Page
 ![Image](https://github.com/Hanzalashaik/project-management-mern/blob/main/client/public/user%20page.png "Image")
-### profile Page
+### 4}profile Page
 ![Image](https://github.com/Hanzalashaik/project-management-mern/blob/main/client/public/profile.png "Image")
 
 ## Usage
