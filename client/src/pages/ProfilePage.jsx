@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from "axios"
 import { useEffect } from 'react';
 
@@ -44,12 +44,16 @@ export default function ProfilePage() {
     getProfile()
   }, [])
 
+  const handleSubmit = (event) =>{
+    event.preventDefault();
+  }
+
   return (
     <>
       <div className='flex justify-center items-center h-screen'>
         <div className='w-3/4 sm:w-2/4 bg-stone-300 p-8 rounded-lg shadow-md'>
           <h1 className='font-bold text-center text-2xl mb-5'>Profile</h1>
-          <form method=''>
+          <form onSubmit={handleSubmit}>
             <div className='flex justify-evenly items-center'>
 
               <div>
