@@ -6,8 +6,6 @@ export default function EditPage() {
   const token = localStorage.getItem("token");
   const user = JSON.parse(localStorage.getItem("users"));
   const admin = JSON.parse(localStorage.getItem("admins"));
-  // console.log(user.uid);
-  const navigate = useNavigate()
 
   const [email, setEmail] = useState("");
 
@@ -43,10 +41,6 @@ export default function EditPage() {
       } else {
         throw new Error('Invalid user or admin');
       }
-
-      // console.log(email);
-      // console.log(fullName);
-      // console.log(role);
 
       const updateData = {
         email,
@@ -87,7 +81,6 @@ export default function EditPage() {
               onChange={handleEmailChange}
             />
           </div>
-          {/* Add more fields */}
           {/* Phone field */}
           <div className="mb-4">
             <label className="block text-gray-700 mb-2">Phone:</label>

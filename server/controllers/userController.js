@@ -122,8 +122,6 @@ router.get("/getbyid/:userId/:projectId/projects", async (req, res) => {
 router.get("/projects/created-at/:date", async (req, res) => {
   try {
     const targetDate = req.params.date; // Date in format 'YYYY-MM-DD'
-
-    // Find projects created at the specified date
     const projects = await userModel.aggregate([
       { $unwind: "$projects" },
       {
@@ -212,7 +210,6 @@ router.put("/updatebyid/:userId/:projectId/projects", async (req, res) => {
 });
 
 // DELETE PROJECTS BY ID
-
 router.delete("/delete/:userId/:projectId/projects", async (req, res) => {
   try {
     const uid = req.params.userId;
@@ -247,6 +244,7 @@ router.delete("/delete/:userId/:projectId/projects", async (req, res) => {
   }
 });
 
+//Delete Project By ID
 router.delete("/deleteall/:userId/projects", async (req, res) => {
   try {
     const uid = req.params.userId;
