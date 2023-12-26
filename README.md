@@ -6,11 +6,11 @@ This is a full-stack project management web application developed using the MERN
 ## Screenshoot
 ### 1)Login Page
 ![Image](https://github.com/Hanzalashaik/project-management-mern/blob/main/client/public/login%20.png "Image")
-### 2}DashBoard
+### 2)DashBoard
 ![Image](https://github.com/Hanzalashaik/project-management-mern/blob/main/client/public/dashboard.png "Image")
-### 3}User Page
+### 3)User Page
 ![Image](https://github.com/Hanzalashaik/project-management-mern/blob/main/client/public/user%20page.png "Image")
-### 4}profile Page
+### 4)profile Page
 ![Image](https://github.com/Hanzalashaik/project-management-mern/blob/main/client/public/profile.png "Image")
 
 ## Usage
