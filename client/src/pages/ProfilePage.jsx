@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios"
 import { useEffect } from 'react';
-
+import config from "../../config.json"
 export default function ProfilePage() {
-
+  const URL = config.URL
   const [data, setData] = useState('')
   const user = JSON.parse(localStorage.getItem("users"))
   const admin = JSON.parse(localStorage.getItem("admins"))
@@ -21,10 +21,10 @@ export default function ProfilePage() {
 
         if (admin?.uid) {
 
-          apiUrl = `http://192.168.0.99:5000/admin/getbyid/${admin?.uid}`;
+          apiUrl = `${URL}/admin/getbyid/${admin?.uid}`;
         } else if (user?.uid) {
 
-          apiUrl = `http://192.168.0.99:5000/user/getbyid/${user?.uid}`;
+          apiUrl = `${URL}/user/getbyid/${user?.uid}`;
         } else {
           throw new Error('Invalid user or admin');
         }

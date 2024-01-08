@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios"
+import config from "../../config.json"
 
 export default function EditPage() {
+
+  const URL = config.URL
+
   const token = localStorage.getItem("token");
   const user = JSON.parse(localStorage.getItem("users"));
   const admin = JSON.parse(localStorage.getItem("admins"));
@@ -35,9 +39,9 @@ export default function EditPage() {
       let apiUrl = '';
 
       if (admin?.uid) {
-        apiUrl = `http://192.168.0.99:5000/admin/updateAdmin/${admin?.uid}`;
+        apiUrl = `${URL}/admin/updateAdmin/${admin?.uid}`;
       } else if (user?.uid) {
-        apiUrl = `http://192.168.0.99:5000/user/updateUser/${user?.uid}`;
+        apiUrl = `${URL}/user/updateUser/${user?.uid}`;
       } else {
         throw new Error('Invalid user or admin');
       }

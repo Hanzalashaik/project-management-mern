@@ -4,6 +4,7 @@ import { FaRegEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 import EditTable from '../pages/EditTable';
 import { UserContext } from "../../utils/UserContext.jsx"
+import config from "../../config.json"
 
 
 export default function Table() {
@@ -12,6 +13,8 @@ export default function Table() {
     const [projectUid, setProjectUid] = useState('');
     const token = localStorage.getItem('token');
     const { count , setCount } = useContext(UserContext);
+
+    const URL = config.URL
     
     useEffect(() => {
         async function getProjects() {
@@ -19,7 +22,7 @@ export default function Table() {
                 const user = JSON.parse(localStorage.getItem('users'));
                 
                 if (user?.uid) {
-                    const response = await axios.get(`http://192.168.0.99:5000/user/getall/${user?.uid}/projects`, {
+                    const response = await axios.get(`${URL}/user/getall/${user?.uid}/projects`, {
                         headers: {
                             'access-token': token
                         }
@@ -46,7 +49,7 @@ export default function Table() {
         try {
             const user = JSON.parse(localStorage.getItem('users'));
             if (user?.uid) {
-                const response = await axios.delete(`http://192.168.0.99:5000/user/delete/${user?.uid}/${idToDelete}/projects`, {
+                const response = await axios.delete(`${URL}/user/delete/${user?.uid}/${idToDelete}/projects`, {
                     headers: {
                         'access-token': token
                     }

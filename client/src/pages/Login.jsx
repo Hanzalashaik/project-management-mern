@@ -4,12 +4,12 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-
+import config from "../../config.json"
 
 const Login = () => {
 
   // const navigate = useNavigate();
-
+  const URL = config.URL
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState('');
@@ -22,7 +22,7 @@ const Login = () => {
 
   const postUserLogin = async () => {
     try {
-      const response = await axios.post('http://192.168.0.99:5000/public/user/login', {
+      const response = await axios.post(`${URL}/public/user/login`, {
         email,
         password,
       });
@@ -46,7 +46,7 @@ const Login = () => {
 
   const postAdminLogin = async () => {
     try {
-      const response = await axios.post('http://192.168.0.99:5000/public/admin/login', {
+      const response = await axios.post(`${URL}/public/admin/login`, {
         email,
         password,
       });

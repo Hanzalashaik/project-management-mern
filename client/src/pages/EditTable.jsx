@@ -1,9 +1,11 @@
 import React from 'react'
 import { useRef, useState } from 'react';
+import config from "../../config.json"
 
 import axios from "axios"
 
 export default function EditTable({ setShowModal, projectUid }) {
+    const URL = config.URL
     const projectName = useRef();
     const description = useRef();
     const status = useRef();
@@ -22,12 +24,12 @@ export default function EditTable({ setShowModal, projectUid }) {
 
     async function getAllUsers() {
         try {
-            const userResponse = await axios.get("http://192.168.0.99:5000/user/getall", {
+            const userResponse = await axios.get(`${URL}/user/getall`, {
                 headers: {
                     "access-token": token
                 }
             });
-            const AdminResponse = await axios.get("http://192.168.0.99:5000/admin/getall", {
+            const AdminResponse = await axios.get(`${URL}/admin/getall`, {
                 headers: {
                     "access-token": token
                 }
@@ -71,9 +73,9 @@ export default function EditTable({ setShowModal, projectUid }) {
 
             if (admin?.uid) {
 
-                apiUrl = `http://192.168.0.99:5000/admin/updatebyid/${admin?.uid}/${projectUid}/projects`;
+                apiUrl = `${URL}/admin/updatebyid/${admin?.uid}/${projectUid}/projects`;
             } else if (user?.uid) {
-                apiUrl = `http://192.168.0.99:5000/user/updatebyid/${user?.uid}/${projectUid}/projects`;
+                apiUrl = `${URL}/user/updatebyid/${user?.uid}/${projectUid}/projects`;
             } else {
 
                 throw new Error('Invalid user or admin');

@@ -3,10 +3,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import config from "../../config.json"
 
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 export default function Signup() {
+  const URL = config.URL
+
   const navigate = useNavigate();
 
   const fullNameRef = useRef(null);
@@ -43,8 +46,8 @@ export default function Signup() {
     const selectedRole = roleRef.current.value;
     const endpoint =
       selectedRole === 'admin'
-        ? 'http://192.168.0.99:5000/public/admin/register'
-        : 'http://192.168.0.99:5000/public/user/register';
+        ? `${URL}/public/admin/register`
+        : `${URL}/public/user/register`;
 
     try {
       const response = await axios.post(endpoint, {

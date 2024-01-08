@@ -3,12 +3,14 @@ import StatusBar from '../components/StatusBar.jsx';
 import SideBar from '../components/SideBar.jsx';
 import BarChart from '../../utils/BarChart.jsx';
 import axios from 'axios';
+import config from "../../config.json"
 
 export default function Home() {
   const user = JSON.parse(localStorage.getItem('users'));
   const admin = JSON.parse(localStorage.getItem('admins'));
   const token = localStorage.getItem('token');
   const [data, setData] = useState({});
+  const URL = config.URL
 
   useEffect(() => {
     async function getProfile() {
@@ -16,9 +18,9 @@ export default function Home() {
         let apiUrl = '';
 
         if (admin?.uid) {
-          apiUrl = `http://192.168.0.99:5000/admin/getbyid/${admin?.uid}`;
+          apiUrl = `${URL}/admin/getbyid/${admin?.uid}`;
         } else if (user?.uid) {
-          apiUrl = `http://192.168.0.99:5000/user/getbyid/${user?.uid}`;
+          apiUrl = `${URL}/user/getbyid/${user?.uid}`;
         } else {
           throw new Error('Invalid user or admin');
         }

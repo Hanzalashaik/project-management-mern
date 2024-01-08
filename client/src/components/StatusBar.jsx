@@ -5,10 +5,11 @@ import { MdOutlinePendingActions } from 'react-icons/md';
 import { FcCancel } from 'react-icons/fc';
 import { IoDocuments } from "react-icons/io5";
 import axios from 'axios';
+import config from "../../config.json"
 
 
 export default function StatusBar() {
-
+  const URL = config.URL
   const [data, setData] = useState([]);
 
   const token = localStorage.getItem("token")
@@ -23,9 +24,9 @@ export default function StatusBar() {
         let apiUrl = '';
 
         if (admin?.uid) {
-          apiUrl = `http://192.168.0.99:5000/admin/getbyid/${admin?.uid}`;
+          apiUrl = `${URL}/admin/getbyid/${admin?.uid}`;
         } else if (user?.uid) {
-          apiUrl = `http://192.168.0.99:5000/user/getbyid/${user?.uid}`;
+          apiUrl = `${URL}/user/getbyid/${user?.uid}`;
         } else {
           throw new Error('Invalid user or admin');
         }

@@ -1,9 +1,10 @@
 import React, { useState, useRef ,useContext} from 'react';
 import axios from 'axios';
 import { UserContext } from "../../utils/UserContext.jsx"
+import config from "../../config.json"
 
 export default function Input({ setShowModal }) {
-
+    const URL = config.URL
     const { count , setCount } = useContext(UserContext);
 
     const projectName = useRef();
@@ -23,12 +24,12 @@ export default function Input({ setShowModal }) {
 
     async function getAllUsers() {
         try {
-            const userResponse = await axios.get("http://192.168.0.99:5000/user/getall", {
+            const userResponse = await axios.get(`${URL}/user/getall`, {
                 headers: {
                     "access-token": token
                 }
             });
-            const AdminResponse = await axios.get("http://192.168.0.99:5000/admin/getall", {
+            const AdminResponse = await axios.get(`${URL}/admin/getall`, {
                 headers: {
                     "access-token": token
                 }
@@ -73,9 +74,9 @@ export default function Input({ setShowModal }) {
 
             if (admin?.uid) {
 
-                apiUrl = `http://192.168.0.99:5000/admin/addprojects/${admin?.uid}/projects`;
+                apiUrl = `${URL}/admin/addprojects/${admin?.uid}/projects`;
             } else if (user?.uid) {
-                apiUrl = `http://192.168.0.99:5000/user/addprojects/${user?.uid}/projects`;
+                apiUrl = `${URL}/user/addprojects/${user?.uid}/projects`;
             } else {
 
                 throw new Error('Invalid user or admin');

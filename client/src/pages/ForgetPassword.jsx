@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import config from "../../config.json"
 
 export default function ForgetPassword() {
     const [email, setEmail] = useState('');
+    const URL = config.URL
 
     const handleForgetPassword = async (e) => {
         e.preventDefault();
         try {
             try {
-                const userResponse = await axios.post('http://192.168.0.99:5000/public/user/forgot-password', { email });
+                const userResponse = await axios.post(`${URL}/public/user/forgot-password`, { email });
                 console.log(userResponse);
             } catch (error) {
-                const adminResponse = await axios.post('http://192.168.0.99:5000/public/admin/forgot-password', { email });
+                const adminResponse = await axios.post(`${URL}/public/admin/forgot-password`, { email });
                 console.log(adminResponse);
             }
         } catch (error) {
