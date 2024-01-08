@@ -9,10 +9,11 @@ export default function SideBar() {
     JSON.parse(localStorage.getItem("admins"))
     // const admin = JSON.parse(localStorage.getItem("admins"))
     function logout() {
-        localStorage.removeItem("users");
-        localStorage.removeItem("token");
-        localStorage.removeItem("userId");
-        localStorage.removeItem("admins");
+        // localStorage.removeItem("users");
+        // localStorage.removeItem("token");
+        // localStorage.removeItem("userId");
+        // localStorage.removeItem("admins");
+        localStorage.clear()
         window.location.reload()
 
     }

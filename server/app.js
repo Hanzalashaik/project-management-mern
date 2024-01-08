@@ -39,10 +39,10 @@ app.use('/public/admin',publicAdminRouter)
 app.use("/user",authMiddleware,userRouter);
 app.use("/admin",authMiddleware,adminRouter);
 
-// Handle 404 errors - Route not found
-app.use((req, res, next) => {
-  res.status(404).send("404 - Route Not Found");
-});
+// // Handle 404 errors - Route not found
+// app.use((req, res, next) => {
+//   res.status(404).send("404 - Route Not Found");
+// });
 
 // Handle other errors
 app.use((err, req, res, next) => {
