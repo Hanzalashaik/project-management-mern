@@ -5,6 +5,12 @@ import userRouter from "./controllers/userController.js"
 import adminRouter from "./controllers/adminController.js"
 import cors from "cors"
 
+
+import path from "path";
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url); 
+const __dirname = path.dirname(__filename); 
+
 // DB Connect in Config Folder
 
 import "./utils/dbConnect.js";
@@ -19,6 +25,12 @@ const PORT = process.env.PORT || config.get("PORT");
 
 // Middleware - Parse incoming requests as JSON
 app.use(express.json());
+
+app.use(express.static(path.join(__dirname, "dist")));
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "dist"));
+});
+
 app.use('/public/user',publicUserRouter)
 app.use('/public/admin',publicAdminRouter)
 
