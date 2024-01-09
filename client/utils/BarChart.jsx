@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import axios from 'axios';
 import {Chart as ChartJS} from "chart.js/auto"
+import config from "../config.json"
 
 export default function BarChart() {
   const token = localStorage.getItem('token');
@@ -9,6 +10,7 @@ export default function BarChart() {
   const admin = JSON.parse(localStorage.getItem('admins'));
   const [userData, setUserData] = useState(null);
   const [data, setData] = useState(null);
+  const URL = config.URL
 
   function countProjects(projects) {
     if (!Array.isArray(projects)) {
@@ -32,9 +34,9 @@ export default function BarChart() {
         let apiUrl = '';
 
         if (admin?.uid) {
-          apiUrl = `http://192.168.0.99:5000/admin/getbyid/${admin?.uid}`;
+          apiUrl = `${URL}/admin/getbyid/${admin?.uid}`;
         } else if (user?.uid) {
-          apiUrl = `http://192.168.0.99:5000/user/getbyid/${user?.uid}`;
+          apiUrl = `${URL}/user/getbyid/${user?.uid}`;
         } else {
           throw new Error('Invalid user or admin');
         }
