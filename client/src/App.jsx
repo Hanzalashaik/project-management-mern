@@ -20,8 +20,8 @@ export default function App() {
     <UserProvider>
       <Router>
         <Routes>
-          <Route path="/" element={<Navigate to="/login" />} />
-          <Route path="/login" element={user || admin ? <Navigate to="/" /> : <Login />} />
+          <Route path="/" element={user || admin ? <Home /> : <Navigate to="/login" />} />
+          <Route path="/login" element={user || admin ? <Home /> :<Navigate to="/login" />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/user" element={user || admin ? <User /> : <Navigate to="/login" />} />
           <Route path="/admin" element={user || admin ? <Admin /> : <Navigate to="/login" />} />
