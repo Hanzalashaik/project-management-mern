@@ -27,9 +27,9 @@ const PORT = process.env.PORT || config.get("PORT");
 app.use(express.json());
 
 app.use(express.static(path.join(__dirname, "dist")));
-app.get("/*", (req, res) => {
-  res.sendFile(path.join(__dirname, "dist"));
-});
+// app.get("/*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "dist"));
+// });
 
 app.use('/public/user',publicUserRouter)
 app.use('/public/admin',publicAdminRouter)
