@@ -10,25 +10,27 @@ import ProfilePage from "./pages/ProfilePage.jsx"
 import EditPage from "./pages/EditProfile.jsx"
 import ResetPassword from "./pages/ResetPassword.jsx"
 import { UserProvider } from "../utils/UserContext.jsx"
+
 export default function App() {
 
-  const user = localStorage.getItem("users")
-  const admin = localStorage.getItem("admins")
-  // console.log(admin);
+  const user = localStorage.getItem("users");
+  const admin = localStorage.getItem("admins");
+  const isAuthenticated = user || admin; // Check if any user or admin is logged in
 
   return (
     <UserProvider>
       <Router>
         <Routes>
-          <Route path="/" element={user || admin ? <Home /> : <Navigate to="/login" />} />
-          <Route path="/login" element={user || admin ? <Home /> :<Navigate to="/login" />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/user" element={user || admin ? <User /> : <Navigate to="/login" />} />
-          <Route path="/admin" element={user || admin ? <Admin /> : <Navigate to="/login" />} />
-          <Route path="/forgetpassword" element={<ForgetPassword />} />
-          <Route path="/profile" element={user || admin ? <ProfilePage /> : <Navigate to="/login" />} />
-          <Route path="/edit" element={<EditPage />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
+  
+          <Route path="/" element={ isAuthenticated ? <Home /> : <Navigate to="/login" />} />
+          <Route path="/login" element={ isAuthenticated ? <Navigate to="/" /> : <Login />} />
+          <Route path="/signup" element={ isAuthenticated ? <Navigate to="/" /> : <Signup />} />
+          <Route path="/user" element={ isAuthenticated ? <User /> : <Navigate to="/login" />} />
+          <Route path="/admin" element={ admin ? <Admin /> : <Navigate to="/login" />} />
+          <Route path="/forgetpassword" element={ isAuthenticated ? <Navigate to="/" /> : <ForgetPassword />} />
+          <Route path="/profile" element={ isAuthenticated ? <ProfilePage /> : <Navigate to="/login" />} />
+          <Route path="/edit" element={ isAuthenticated ? <EditPage /> : <Navigate to="/login" />} />
+          <Route path="/reset-password" element={ isAuthenticated ? <ResetPassword /> : <Navigate to="/login" />} />
         </Routes>
       </Router>
     </UserProvider>
