@@ -35,7 +35,7 @@ const Login = () => {
 
       const successMsg = response.data.msg;
 
-
+      
       return successMsg
     } catch (error) {
       const errorMessage = error.response?.data?.msg || 'An error occurred';
