@@ -45,10 +45,10 @@ app.use("/admin",authMiddleware,adminRouter);
 // });
 
 // Handle other errors
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send("500 - Internal Server Error");
-});
+// app.use((err, req, res, next) => {
+//   console.error(err.stack);
+//   res.status(500).send("500 - Internal Server Error");
+// });
 
 app.listen(PORT, () => {
   console.log(`Server is running on PORT 🚀 ${PORT}`);
