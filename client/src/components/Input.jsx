@@ -15,6 +15,7 @@ export default function Input({ setShowModal }) {
     const startDate = useRef();
     const endDate = useRef();
 
+    const token = localStorage.getItem('token');
     const user = JSON.parse(localStorage.getItem('users'));
     const admin = JSON.parse(localStorage.getItem('admins'));
     
@@ -23,7 +24,6 @@ export default function Input({ setShowModal }) {
     
     useEffect(() => {
         async function getAllUsers() {
-            const token = localStorage.getItem('token');
             try {
                 const userResponse = await axios.get(`${URL}/user/getall`, {
                     headers: {
