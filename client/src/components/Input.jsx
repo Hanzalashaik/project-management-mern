@@ -1,11 +1,11 @@
-import React, { useState, useRef ,useContext, useEffect} from 'react';
+import React, { useState, useRef, useContext, useEffect } from 'react';
 import axios from 'axios';
-import { UserContext } from "../../utils/UserContext.jsx"
-import config from "../../config.json"
+import { UserContext } from '../../utils/UserContext.jsx';
+import config from '../../config.json';
 
 export default function Input({ setShowModal }) {
-    const URL = config.URL
-    const { count , setCount } = useContext(UserContext);
+    const URL = config.URL;
+    const { count, setCount } = useContext(UserContext);
 
     const projectName = useRef();
     const description = useRef();
@@ -15,55 +15,53 @@ export default function Input({ setShowModal }) {
     const startDate = useRef();
     const endDate = useRef();
 
-    const user = JSON.parse(localStorage.getItem("users"))
-    const admin = JSON.parse(localStorage.getItem("admins"))
-    const token = localStorage.getItem("token")
-
-    useEffect(()=>{
-        console.log("hello token:",token);
-        async function getAllUsers() {
-            try {
-                const userResponse = await axios.get(`${URL}/user/getall`, {
-                    headers: {
-                        "access-token": token
-                    }
-                });
-                const AdminResponse = await axios.get(`${URL}/admin/getall`, {
-                    headers: {
-                        "access-token": token
-                    }
-                });
-                const users = userResponse.data;
-                const admins = AdminResponse.data;
-    
-    
-                const userfullNames = users.map(user => user.fullName);
-                const adminfullNames = admins.map(admin => admin.fullName);
-    
-                setUserFullNames(userfullNames);
-                setAdminFullNames(adminfullNames);
-    
-                // console.log("Full Names of Users:", userfullNames);
-                // console.log("Full Names of Admins:", adminfullNames);
-                // console.log("Admin", AdminResponse);
-    
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        getAllUsers()
-    },[token])
+    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('users'));
+    const admin = JSON.parse(localStorage.getItem('admins'));
 
     const [userfullNames, setUserFullNames] = useState([]);
     const [adminfullNames, setAdminFullNames] = useState([]);
 
-   
+    useEffect(() => {
+        async function getAllUsers() {
+            try {
+                const userResponse = await axios.get(`${URL}/user/getall`, {
+                    headers: {
+                        'access-token': token,
+                    },
+                });
+                const AdminResponse = await axios.get(`${URL}/admin/getall`, {
+                    headers: {
+                        'access-token': token,
+                    },
+                });
+                const users = userResponse.data;
+                const admins = AdminResponse.data;
+
+                console.log('admin response', AdminResponse);
+
+                const userfullNames = users.map((user) => user.fullName);
+                const adminfullNames = admins.map((admin) => admin.fullName);
+
+                setUserFullNames(userfullNames);
+                setAdminFullNames(adminfullNames);
+
+                // console.log("Full Names of Users:", userfullNames);
+                // console.log("Full Names of Admins:", adminfullNames);
+                // console.log("Admin", AdminResponse);
+            } catch (error) {
+                console.log('Error fetching users:', error);
+            }
+        }
+
+        getAllUsers();
+    }, [token]);
 
     async function handleSave(e) {
         e.preventDefault();
 
         const newProject = {
-            uid: count+1,
+            uid: count + 1,
             projectName: projectName.current.value,
             description: description.current.value,
             status: status.current.value,
@@ -76,25 +74,21 @@ export default function Input({ setShowModal }) {
         try {
             let apiUrl = '';
 
-
             if (admin?.uid) {
-
                 apiUrl = `${URL}/admin/addprojects/${admin?.uid}/projects`;
             } else if (user?.uid) {
                 apiUrl = `${URL}/user/addprojects/${user?.uid}/projects`;
             } else {
-
                 throw new Error('Invalid user or admin');
             }
 
             const response = await axios.post(apiUrl, newProject, {
                 headers: {
-                    "access-token": token
-                }
+                    'access-token': token,
+                },
             });
 
             console.log(response.data);
-
 
             projectName.current.value = '';
             description.current.value = '';
@@ -106,18 +100,14 @@ export default function Input({ setShowModal }) {
 
             handleCloseModal();
             window.location.reload();
-
-
         } catch (error) {
-            console.log(error);
+            console.log('Error saving project:', error);
         }
     }
-
 
     function handleCloseModal() {
         setShowModal(false);
     }
-
 
     return (
         <form onSubmit={handleSave}>
