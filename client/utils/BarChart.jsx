@@ -10,6 +10,7 @@ export default function BarChart() {
   const admin = JSON.parse(localStorage.getItem('admins'));
   const [userData, setUserData] = useState(null);
   const [data, setData] = useState(null);
+  
   const URL = config.URL
 
   function countProjects(projects) {

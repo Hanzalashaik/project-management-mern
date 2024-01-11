@@ -51,12 +51,12 @@ export default function Table() {
         try {
             const admin = JSON.parse(localStorage.getItem('admins'));
             if (admin?.uid) {
-                const response = await axios.delete(`${URL}/user/delete/${admin?.uid}/${idToDelete}/projects`, {
+                const response = await axios.delete(`${URL}/admin/delete/${admin?.uid}/${idToDelete}/projects`, {
                     headers: {
                         'access-token': token
                     }
                 });
-                // console.log(response);
+                console.log(response);
             }
 
 
