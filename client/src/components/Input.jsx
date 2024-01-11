@@ -38,7 +38,7 @@ export default function Input({ setShowModal }) {
                 const users = userResponse.data;
                 const admins = AdminResponse.data;
 
-                console.log('admin response', AdminResponse);
+                // console.log('admin response', AdminResponse);
 
                 const userfullNames = users.map((user) => user.fullName);
                 const adminfullNames = admins.map((admin) => admin.fullName);

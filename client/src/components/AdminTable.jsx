@@ -34,7 +34,7 @@ export default function Table() {
                     let count1 = projectCount.length
                     setCount(count1)
                     // console.log(count1);
-                    console.log(count);
+                    // console.log(count);
                 }
 
             } catch (error) {

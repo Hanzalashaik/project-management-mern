@@ -40,12 +40,12 @@ export default function Home() {
     getProfile();
   }, []);
 
-  useEffect(() => {
-    // Check if email and phone are not verified
-    if (data && data.email === false && data.phone === false) {
-      alert('Please Verify email and phone number');
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   // Check if email and phone are not verified
+  //   if (data && data.email === false && data.phone === false) {
+  //     alert('Please Verify email and phone number');
+  //   }
+  // }, [data]);
 
   return (
     <div className='flex '>

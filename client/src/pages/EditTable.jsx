@@ -66,7 +66,7 @@ export default function EditTable({ setShowModal, projectUid }) {
             startDate: startDate.current.value,
             endDate: endDate.current.value,
         };
-            console.log(projectUid);
+            // console.log(projectUid);
         try {
             let apiUrl = '';
 
@@ -89,7 +89,7 @@ export default function EditTable({ setShowModal, projectUid }) {
                 }
             });
 
-            console.log(response);
+            // console.log(response);
 
             projectName.current.value = '';
             description.current.value = '';

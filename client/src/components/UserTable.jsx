@@ -30,9 +30,9 @@ export default function Table() {
                     setProjects(response.data.projects);
                     let projectCount = response.data.projects
                     let count1 = projectCount.length
-                    setCount(count1)
-                    console.log(count1);
-                    console.log(count);
+                    // setCount(count1)
+                    // console.log(count1);
+                    // console.log(count);
                 }
 
             } catch (error) {
@@ -54,7 +54,7 @@ export default function Table() {
                         'access-token': token
                     }
                 });
-                console.log(response);
+                // console.log(response);
             }
 
 

@@ -11,10 +11,10 @@ export default function ForgetPassword() {
         try {
             try {
                 const userResponse = await axios.post(`${URL}/public/user/forgot-password`, { email });
-                console.log(userResponse);
+                // console.log(userResponse);
             } catch (error) {
                 const adminResponse = await axios.post(`${URL}/public/admin/forgot-password`, { email });
-                console.log(adminResponse);
+                // console.log(adminResponse);
             }
         } catch (error) {
             console.error(error);
