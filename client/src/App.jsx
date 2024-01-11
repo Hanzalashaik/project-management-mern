@@ -21,17 +21,17 @@ export default function App() {
     <UserProvider>
       <Router>
 
-
-        <Route path="/" element={isAuthenticated ? <Home /> : <Navigate to="/login" />} />
-        <Route path="/login" element={isAuthenticated ? <Navigate to="/" /> : <Login />} />
-        <Route path="/signup" element={isAuthenticated ? <Navigate to="/" /> : <Signup />} />
-        <Route path="/user" element={isAuthenticated ? <User /> : <Navigate to="/login" />} />
-        <Route path="/admin" element={admin ? <Admin /> : <Navigate to="/login" />} />
-        <Route path="/forgetpassword" element={isAuthenticated ? <Navigate to="/" /> : <ForgetPassword />} />
-        <Route path="/profile" element={isAuthenticated ? <ProfilePage /> : <Navigate to="/login" />} />
-        <Route path="/edit" element={isAuthenticated ? <EditPage /> : <Navigate to="/login" />} />
-        <Route path="/reset-password" element={isAuthenticated ? <ResetPassword /> : <Navigate to="/login" />} />
-
+        <Routes>
+          <Route path="/" element={isAuthenticated ? <Home /> : <Navigate to="/login" />} />
+          <Route path="/login" element={isAuthenticated ? <Navigate to="/" /> : <Login />} />
+          <Route path="/signup" element={isAuthenticated ? <Navigate to="/" /> : <Signup />} />
+          <Route path="/user" element={isAuthenticated ? <User /> : <Navigate to="/login" />} />
+          <Route path="/admin" element={admin ? <Admin /> : <Navigate to="/login" />} />
+          <Route path="/forgetpassword" element={isAuthenticated ? <Navigate to="/" /> : <ForgetPassword />} />
+          <Route path="/profile" element={isAuthenticated ? <ProfilePage /> : <Navigate to="/login" />} />
+          <Route path="/edit" element={isAuthenticated ? <EditPage /> : <Navigate to="/login" />} />
+          <Route path="/reset-password" element={isAuthenticated ? <ResetPassword /> : <Navigate to="/login" />} />
+        </Routes>
       </Router>
     </UserProvider>
   );
