@@ -1,4 +1,4 @@
-import React, { useState, useRef ,useContext} from 'react';
+import React, { useState, useRef ,useContext, useEffect} from 'react';
 import axios from 'axios';
 import { UserContext } from "../../utils/UserContext.jsx"
 import config from "../../config.json"
@@ -19,40 +19,45 @@ export default function Input({ setShowModal }) {
     const admin = JSON.parse(localStorage.getItem("admins"))
     const token = localStorage.getItem("token")
 
+    useEffect(()=>{
+        console.log("hello token:",token);
+        async function getAllUsers() {
+            try {
+                const userResponse = await axios.get(`${URL}/user/getall`, {
+                    headers: {
+                        "access-token": token
+                    }
+                });
+                const AdminResponse = await axios.get(`${URL}/admin/getall`, {
+                    headers: {
+                        "access-token": token
+                    }
+                });
+                const users = userResponse.data;
+                const admins = AdminResponse.data;
+    
+    
+                const userfullNames = users.map(user => user.fullName);
+                const adminfullNames = admins.map(admin => admin.fullName);
+    
+                setUserFullNames(userfullNames);
+                setAdminFullNames(adminfullNames);
+    
+                // console.log("Full Names of Users:", userfullNames);
+                // console.log("Full Names of Admins:", adminfullNames);
+                // console.log("Admin", AdminResponse);
+    
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        getAllUsers()
+    },[token])
+
     const [userfullNames, setUserFullNames] = useState([]);
     const [adminfullNames, setAdminFullNames] = useState([]);
 
-    async function getAllUsers() {
-        try {
-            const userResponse = await axios.get(`${URL}/user/getall`, {
-                headers: {
-                    "access-token": token
-                }
-            });
-            const AdminResponse = await axios.get(`${URL}/admin/getall`, {
-                headers: {
-                    "access-token": token
-                }
-            });
-            const users = userResponse.data;
-            const admins = AdminResponse.data;
-
-
-            const userfullNames = users.map(user => user.fullName);
-            const adminfullNames = admins.map(admin => admin.fullName);
-
-            setUserFullNames(userfullNames);
-            setAdminFullNames(adminfullNames);
-
-            // console.log("Full Names of Users:", userfullNames);
-            // console.log("Full Names of Admins:", adminfullNames);
-            // console.log("Admin", AdminResponse);
-
-        } catch (error) {
-            console.log(error);
-        }
-    }
-    getAllUsers()
+   
 
     async function handleSave(e) {
         e.preventDefault();
