@@ -1,11 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react';
 import { useRef, useState } from 'react';
-import config from "../../config.json"
-
-import axios from "axios"
+import config from "../../config.json";
+import axios from "axios";
 
 export default function EditTable({ setShowModal, projectUid }) {
-    const URL = config.URL
+    const URL = config.URL;
     const projectName = useRef();
     const description = useRef();
     const status = useRef();
@@ -17,10 +16,32 @@ export default function EditTable({ setShowModal, projectUid }) {
     const token = localStorage.getItem("token");
     const data = JSON.parse(localStorage.getItem("data"));
 
-    // console.log(user.projects.uid);
-
     const [userfullNames, setUserFullNames] = useState([]);
     const [adminfullNames, setAdminFullNames] = useState([]);
+    const [ProjectName, setProjectName] = useState('');
+    const [desc, setDesc] = useState('');
+
+    useEffect(() => {
+        async function getProjects() {
+            let role = data.role;
+            try {
+                let response = await axios.get(`${URL}/${role}/getbyid/${data.uid}`, {
+                    headers: {
+                        "access-token": token
+                    }
+                });
+
+                // Subtract 1 to convert 1-based index to 0-based index
+                let id = projectUid - 1;
+
+                setProjectName(response.data.projects[id]?.projectName || '');
+                setDesc(response.data.projects[id]?.description || '');
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        getProjects();
+    }, [projectUid]);
 
     async function getAllUsers() {
         try {
@@ -37,22 +58,19 @@ export default function EditTable({ setShowModal, projectUid }) {
             const users = userResponse.data;
             const admins = AdminResponse.data;
 
-
             const userfullNames = users.map(user => user.fullName);
             const adminfullNames = admins.map(admin => admin.fullName);
 
             setUserFullNames(userfullNames);
             setAdminFullNames(adminfullNames);
-
-            // console.log("Full Names of Users:", userfullNames);
-            // console.log("Full Names of Admins:", adminfullNames);
-            // console.log("Admin", AdminResponse);
-
         } catch (error) {
             console.log(error);
         }
     }
-    getAllUsers()
+
+    useEffect(() => {
+        getAllUsers();
+    }, []);
 
     async function handleSave(e) {
         e.preventDefault();
@@ -66,30 +84,24 @@ export default function EditTable({ setShowModal, projectUid }) {
             startDate: startDate.current.value,
             endDate: endDate.current.value,
         };
-            // console.log(projectUid);
+
         try {
             let apiUrl = '';
+            let role = data.role;
 
-            let role = data.role
             if (role === "admin") {
-
                 apiUrl = `${URL}/admin/updatebyid/${data?.uid}/${projectUid}/projects`;
             } else if (role === "user") {
                 apiUrl = `${URL}/user/updatebyid/${data?.uid}/${projectUid}/projects`;
             } else {
-
                 throw new Error('Invalid user or admin');
             }
-
-            // console.log(updatedProjects);
 
             const response = await axios.put(apiUrl, updatedProjects, {
                 headers: {
                     "access-token": token
                 }
             });
-
-            // console.log(response);
 
             projectName.current.value = '';
             description.current.value = '';
@@ -101,8 +113,6 @@ export default function EditTable({ setShowModal, projectUid }) {
 
             handleCloseModal();
             window.location.reload();
-
-
         } catch (error) {
             console.log(error);
         }
@@ -111,7 +121,7 @@ export default function EditTable({ setShowModal, projectUid }) {
     function handleCloseModal() {
         setShowModal(false);
     }
-    
+
     return (
         <form onSubmit={handleSave}>
 
@@ -131,17 +141,21 @@ export default function EditTable({ setShowModal, projectUid }) {
                                         className="border rounded-md px-2 py-1 w-full focus:outline-none focus:border-blue-500"
                                         ref={projectName}
                                         type="text"
+                                        defaultValue={ProjectName}
                                         required
                                     />
+
                                 </div>
                                 <div className="flex flex-col">
                                     <label className="text-gray-600 mb-1">Description:</label>
                                     <input
                                         className="border rounded-md px-2 py-1 w-full focus:outline-none focus:border-blue-500"
                                         ref={description}
+                                        defaultValue={desc}
                                         type="text"
                                         required
                                     />
+
                                 </div>
                                 <div className="flex flex-col">
                                     <label className="text-gray-600 mb-1">Status:</label>

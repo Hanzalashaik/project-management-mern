@@ -63,36 +63,36 @@ export default function StatusBar() {
 
   return (
     <>
-      <h1 className='mx-9 my-1 text-2xl  italic'>Status</h1>
-      <div className='h-40 bg-stone-600 rounded-3xl mx-5 flex justify-around items-center p-5'>
+      <h1 className='sm:mx-9 my-1 sm:text-2xl italic'>Status</h1>
+      <div className='sm:h-40 bg-stone-600 rounded-3xl sm:mx-5 flex justify-around items-center sm:p-5'>
         <div className='flex flex-col items-center'>
-          <IoDocuments className='text-4xl text-purple-700 mb-2' />
-          <h1 className='text-blue-100 text-lg font-semibold'>{projectsCount.total} Total</h1>
+          <IoDocuments className='sm:text-4xl text-xs text-purple-700 sm:mb-2' />
+          <h1 className='text-blue-100 sm:text-lg  text-xs  font-semibold'>{projectsCount.total} Total</h1>
         </div>
 
         <div className='flex flex-col items-center'>
-          <FaCheckCircle className='text-4xl text-green-700 mb-2' />
-          <h1 className='text-blue-100 text-lg font-semibold'>{projectsCount.completed} Completed</h1>
+          <FaCheckCircle className='sm:text-4xl text-xs text-green-700 mb-2' />
+          <h1 className='text-blue-100 sm:text-lg text-xs  font-semibold'>{projectsCount.completed} Completed</h1>
         </div>
 
         <div className='flex flex-col items-center'>
-          <FaRegCircleDot className='text-4xl text-blue-700 mb-2' />
-          <h1 className='text-blue-100 text-lg font-semibold'>{projectsCount.inProgress} In Progress</h1>
+          <FaRegCircleDot className='sm:text-4xl text-xs text-blue-700 sm:mb-2' />
+          <h1 className='text-blue-100 sm:text-lg text-xs font-semibold'>{projectsCount.inProgress} In Progress</h1>
         </div>
 
         <div className='flex flex-col items-center'>
-          <FcCancel className='text-4xl text-red-700 mb-2' />
-          <h1 className='text-blue-100 text-lg font-semibold'>{projectsCount.cancelled} Cancelled</h1>
+          <FcCancel className='sm:text-4xl text-xs text-red-700 sm:mb-2' />
+          <h1 className='text-blue-100 sm:text-lg text-xs font-semibold'>{projectsCount.cancelled} Cancelled</h1>
         </div>
 
         <div className='flex flex-col items-center'>
-          <MdOutlinePendingActions className='text-4xl text-yellow-700 mb-2' />
-          <h1 className='text-blue-100 text-lg font-semibold'>{projectsCount.pending} Pending</h1>
+          <MdOutlinePendingActions className='sm:text-4xl text-xs text-yellow-700 sm:mb-2' />
+          <h1 className='text-blue-100 sm:text-lg text-xs  font-semibold'>{projectsCount.pending} Pending</h1>
         </div>
 
         <div className='flex flex-col items-center'>
-          <FaRegCircleDot className='text-4xl text-red-700 mb-2' />
-          <h1 className='text-blue-100 text-lg font-semibold'>{projectsCount.notStarted} Not Started</h1>
+          <FaRegCircleDot className='sm:text-4xl text-xs text-red-700 sm:mb-2' />
+          <h1 className='text-blue-100 sm:text-lg text-xs  font-semibold'>{projectsCount.notStarted} Not Started</h1>
         </div>
       </div>
     </>
