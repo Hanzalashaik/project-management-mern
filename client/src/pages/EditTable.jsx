@@ -123,7 +123,7 @@ export default function EditTable({ setShowModal, projectUid }) {
                     <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
                     <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
                         <div className="p-6">
-                            <h2 className="text-lg font-bold mb-4">Add New Project</h2>
+                            <h2 className="text-lg font-bold mb-4">Update Project</h2>
                             <div className="grid grid-cols-1 gap-4">
                                 <div className="flex flex-col">
                                     <label className="text-gray-600 mb-1">Project Name:</label>
