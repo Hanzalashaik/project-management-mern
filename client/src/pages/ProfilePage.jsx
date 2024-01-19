@@ -7,8 +7,8 @@ import config from "../../config.json"
 export default function ProfilePage() {
   const URL = config.URL
   const [data, setData] = useState('')
-  const user = JSON.parse(localStorage.getItem("users"))
-  const admin = JSON.parse(localStorage.getItem("admins"))
+  const info = JSON.parse(localStorage.getItem("data"))
+
   const token = localStorage.getItem("token")
   const navigate = useNavigate()
 
@@ -18,13 +18,13 @@ export default function ProfilePage() {
       try {
         let apiUrl = '';
         // console.log(userId);
+        let role = info.role 
+        if (role === "admin") {
 
-        if (admin?.uid) {
+          apiUrl = `${URL}/admin/getbyid/${info?.uid}`;
+        } else if (role === "user") {
 
-          apiUrl = `${URL}/admin/getbyid/${admin?.uid}`;
-        } else if (user?.uid) {
-
-          apiUrl = `${URL}/user/getbyid/${user?.uid}`;
+          apiUrl = `${URL}/user/getbyid/${info?.uid}`;
         } else {
           throw new Error('Invalid user or admin');
         }

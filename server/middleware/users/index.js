@@ -2,14 +2,14 @@ import { body, validationResult } from "express-validator";
 
 const RegisterValidations = () => {
   return [
-    body("fullName", "First Name is required &&  > 2 char").isLength({
+    body("fullName", "First Name is required < 50 &&  > 2 char").isLength({
       min: 2,
-      max: 15,
+      max: 50,
     }),
 
     body("displayName", "Last Name is Required")
       .notEmpty()
-      .isLength({ min: 2, max: 25 })
+      .isLength({ min: 2, max: 50 })
       .withMessage("Length should be <2 and >15"),
 
     body("email", "Should be a Valid Email").isEmail(),

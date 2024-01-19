@@ -8,8 +8,8 @@ export default function EditPage() {
   const URL = config.URL
 
   const token = localStorage.getItem("token");
-  const user = JSON.parse(localStorage.getItem("users"));
-  const admin = JSON.parse(localStorage.getItem("admins"));
+  const data = JSON.parse(localStorage.getItem("data"));
+
 
   const [email, setEmail] = useState("");
 
@@ -37,11 +37,11 @@ export default function EditPage() {
 
     try {
       let apiUrl = '';
-
-      if (admin?.uid) {
-        apiUrl = `${URL}/admin/updateAdmin/${admin?.uid}`;
-      } else if (user?.uid) {
-        apiUrl = `${URL}/user/updateUser/${user?.uid}`;
+      let role = data.role
+      if (role === "admin") {
+        apiUrl = `${URL}/admin/updateAdmin/${data?.uid}`;
+      } else if (role === "user") {
+        apiUrl = `${URL}/user/updateUser/${data?.uid}`;
       } else {
         throw new Error('Invalid user or admin');
       }

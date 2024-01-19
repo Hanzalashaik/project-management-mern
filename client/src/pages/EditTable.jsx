@@ -15,8 +15,8 @@ export default function EditTable({ setShowModal, projectUid }) {
     const endDate = useRef();
 
     const token = localStorage.getItem("token");
-    const user = JSON.parse(localStorage.getItem("users"));
-    const admin = JSON.parse(localStorage.getItem("admins"));
+    const data = JSON.parse(localStorage.getItem("data"));
+
     // console.log(user.projects.uid);
 
     const [userfullNames, setUserFullNames] = useState([]);
@@ -70,12 +70,12 @@ export default function EditTable({ setShowModal, projectUid }) {
         try {
             let apiUrl = '';
 
+            let role = data.role
+            if (role === "admin") {
 
-            if (admin?.uid) {
-
-                apiUrl = `${URL}/admin/updatebyid/${admin?.uid}/${projectUid}/projects`;
-            } else if (user?.uid) {
-                apiUrl = `${URL}/user/updatebyid/${user?.uid}/${projectUid}/projects`;
+                apiUrl = `${URL}/admin/updatebyid/${data?.uid}/${projectUid}/projects`;
+            } else if (role === "user") {
+                apiUrl = `${URL}/user/updatebyid/${data?.uid}/${projectUid}/projects`;
             } else {
 
                 throw new Error('Invalid user or admin');

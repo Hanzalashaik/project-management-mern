@@ -17,7 +17,7 @@ const projectSchema = new mongoose.Schema({
 
 const adminSchema = new mongoose.Schema({
   uid:{
-    type:String
+    type:Number
   },
   fullName: {
     type: String

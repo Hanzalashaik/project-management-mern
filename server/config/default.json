@@ -1,10 +1,8 @@
 {
     "PORT": 5001,
-    "URL":"https://project.hanzala.site",
-
-    "JWTKEY":"TOO",
-    "CRYPTOKEY":"YOO",
-
+    "URL": "https://project.hanzala.site",
+    "JWTKEY": "TOO",
+    "CRYPTOKEY": "YOO",
     "EMAIL_SMTP": {
         "HOST": "Your Host",
         "AUTH": {

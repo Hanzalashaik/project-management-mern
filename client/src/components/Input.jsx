@@ -3,6 +3,9 @@ import axios from 'axios';
 import { UserContext } from '../../utils/UserContext.jsx';
 import config from '../../config.json';
 
+import { ToastContainer, toast, Bounce } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 export default function Input({ setShowModal }) {
     const URL = config.URL;
     const { count, setCount } = useContext(UserContext);
@@ -16,12 +19,11 @@ export default function Input({ setShowModal }) {
     const endDate = useRef();
 
     const token = localStorage.getItem('token');
-    const user = JSON.parse(localStorage.getItem('users'));
-    const admin = JSON.parse(localStorage.getItem('admins'));
-    
+    const data = JSON.parse(localStorage.getItem('data'));
+
     const [userfullNames, setUserFullNames] = useState([]);
     const [adminfullNames, setAdminFullNames] = useState([]);
-    
+
     useEffect(() => {
         async function getAllUsers() {
             try {
@@ -38,7 +40,7 @@ export default function Input({ setShowModal }) {
                 const users = userResponse.data;
                 const admins = AdminResponse.data;
 
-                console.log('admin response', AdminResponse);
+                // console.log('admin response', AdminResponse);
 
                 const userfullNames = users.map((user) => user.fullName);
                 const adminfullNames = admins.map((admin) => admin.fullName);
@@ -74,37 +76,30 @@ export default function Input({ setShowModal }) {
         };
 
         try {
-            let apiUrl = '';
-
-            if (admin?.uid) {
-                apiUrl = `${URL}/admin/addprojects/${admin?.uid}/projects`;
-            } else if (user?.uid) {
-                apiUrl = `${URL}/user/addprojects/${user?.uid}/projects`;
-            } else {
-                throw new Error('Invalid user or admin');
-            }
+            const apiUrl = `${URL}/${data.role}/addprojects/${data?.uid}/projects`;
 
             const response = await axios.post(apiUrl, newProject, {
                 headers: {
                     'access-token': token,
                 },
             });
+            console.log(response.data.success);
 
-            console.log(response.data);
-
-            projectName.current.value = '';
-            description.current.value = '';
-            status.current.value = '';
-            createdBy.current.value = '';
-            assignedTo.current.value = '';
-            startDate.current.value = '';
-            endDate.current.value = '';
-
+            clearFormFields();
             handleCloseModal();
-            // window.location.reload();
         } catch (error) {
-            console.log('Error saving project:', error);
+            console.error('Error saving project:', error);
         }
+    }
+
+    function clearFormFields() {
+        projectName.current.value = '';
+        description.current.value = '';
+        status.current.value = '';
+        createdBy.current.value = '';
+        assignedTo.current.value = '';
+        startDate.current.value = '';
+        endDate.current.value = '';
     }
 
     function handleCloseModal() {
@@ -230,7 +225,7 @@ export default function Input({ setShowModal }) {
                             >
                                 Cancel
                             </button>
-
+                            <ToastContainer />
                         </div>
                     </div>
                 </div>

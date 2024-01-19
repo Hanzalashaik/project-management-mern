@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import config from "../../config.json"
 
+
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 export default function Signup() {
@@ -26,32 +27,15 @@ export default function Signup() {
     setShowPassword(prevState => !prevState);
   };
 
-
   const [errors, setErrors] = useState('');
-  const [userId, setUserId] = useState(() => {
-    // Retrieve the userId from localStorage or set it to 1 if it doesn't exist
-    const storedUserId = localStorage.getItem('userId');
-    return storedUserId ? parseInt(storedUserId, 10) : 1;
-  });
-
-  useEffect(() => {
-    // Store the userId in localStorage whenever it changes
-    localStorage.setItem('userId', userId);
-  }, [userId]);
-
 
   async function handleSubmit(event) {
     event.preventDefault();
 
     const selectedRole = roleRef.current.value;
-    const endpoint =
-      selectedRole === 'admin'
-        ? `${URL}/public/admin/register`
-        : `${URL}/public/user/register`;
 
     try {
-      const response = await axios.post(endpoint, {
-        uid: userId,
+      const response = await axios.post(`${URL}/public/register/${selectedRole}`, {
         fullName: fullNameRef.current.value,
         displayName: displayNameRef.current.value,
         email: emailRef.current.value,
@@ -67,23 +51,15 @@ export default function Signup() {
         setTimeout(() => {
           navigate('/login');
         }, 4000);
-
       }
-      setUserId(prevUserId => prevUserId + 1);
-
-
       console.log(response);
-    } catch (error) {
-      if (error.response && error.response.status === 400) {
-        const errorMessage = error.response.data.error[0].msg;
-        setErrors(errorMessage);
-        console.log(error);
-      } else {
-        console.log('Server error:', error.message);
-      }
-    }
-  }
 
+    } catch (error) {
+      const errorMessage = error.response.data.msg || "Something Went Wrong";
+      console.log(errorMessage);
+      setErrors(error.response.data.msg)
+  }
+  }
   const notify = (successMsg) => {
     toast.success(successMsg || 'Registered Successfully', {
       position: 'bottom-left',
@@ -99,9 +75,9 @@ export default function Signup() {
 
   return (
     <>
-      <div className="flex justify-center items-center h-full bg-stone-400">
-        <div className="w-11/12 sm:w-3/4 md:w-2/4 lg:w-1/3 text-lg rounded-lg flex flex-col mb-4 bg-stone-300 p-5 m-5">
-          <h1 className="text-2xl md:text-3xl font-semibold mb-4">Sign Up</h1>
+      <div className="flex justify-center items-center h-full  bg-stone-400">
+        <div className="sm:w-4/5 rounded-lg flex flex-col justify-center items-center mb-4 bg-stone-300 p-5 m-5">
+          <h1 className="text-2xl md:text-3xl font-bold mb-4">Sign Up</h1>
           <form className="space-y-4 flex flex-col" onSubmit={handleSubmit}>
             {errors && (
               <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md mb-4">
@@ -116,7 +92,7 @@ export default function Signup() {
                 type="text"
                 id="fullName"
                 ref={fullNameRef}
-                className="p-2 outline-none rounded text-lg"
+                className="p-2 w-96  outline-none rounded text-lg"
                 required
               />
             </div>
@@ -128,7 +104,7 @@ export default function Signup() {
                 type="text"
                 id="displayName"
                 ref={displayNameRef}
-                className="p-2 outline-none rounded text-lg"
+                className="p-2 w-96  outline-none rounded text-lg"
                 required
               />
             </div>
@@ -140,7 +116,7 @@ export default function Signup() {
                 type="email"
                 id="email"
                 ref={emailRef}
-                className="p-2 outline-none rounded text-lg"
+                className="p-2 w-96  outline-none rounded text-lg"
                 required
               />
             </div>
@@ -152,7 +128,7 @@ export default function Signup() {
                 type="text"
                 id="phone"
                 ref={phoneRef}
-                className="p-2 outline-none rounded text-lg"
+                className="p-2 w-96  outline-none rounded text-lg"
                 required
               />
             </div>
@@ -164,7 +140,7 @@ export default function Signup() {
                 name="role"
                 id="role"
                 ref={roleRef}
-                className="p-2 outline-none rounded text-lg"
+                className="p-2 w-96 outline-none rounded text-lg"
                 required
               >
                 <option value="user">User</option>
@@ -179,7 +155,7 @@ export default function Signup() {
                 type="text"
                 id="title"
                 ref={titleRef}
-                className="p-2 outline-none rounded text-lg"
+                className="p-2 w-96 outline-none rounded text-lg"
                 required
               />
             </div>
@@ -192,24 +168,31 @@ export default function Signup() {
                   type={showPassword ? 'text' : 'password'}
                   id="password"
                   ref={passwordRef}
-                  className="p-2 outline-none rounded text-lg"
+                  className="p-2 w-96 outline-none rounded text-lg"
                   required
                 />
-                <button
-                  type="button"
-                  className="absolute top-2 right-2 text-gray-500 focus:outline-none"
-                  onClick={togglePasswordVisibility}
-                >
-                  {showPassword ? <FaEyeSlash /> : <FaEye />}
-                </button>
+                {showPassword ? (
+                  <FaEyeSlash
+                    className="absolute right-3 top-4 cursor-pointer"
+                    onClick={togglePasswordVisibility}
+                  />
+                ) : (
+                  <FaEye
+                    className="absolute right-3 top-4 cursor-pointer"
+                    onClick={togglePasswordVisibility}
+                  />
+                )}
+
               </div>
             </div>
-            <button
-              type="submit"
-              className="p-2 bg-green-500 text-white rounded hover:bg-green-600"
-            >
-              Sign up
-            </button>
+            <div className="flex justify-center"> {/* Add this container for centering */}
+              <button
+                type="submit"
+                className="p-2 w-32 bg-green-500 font-bold text-white rounded hover:bg-green-600"
+              >
+                Sign up
+              </button>
+            </div>
             <ToastContainer />
             <p className="text-sm text-center ">
               Already have an account?{' '}

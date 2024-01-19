@@ -13,8 +13,8 @@ export default function StatusBar() {
   const [data, setData] = useState([]);
 
   const token = localStorage.getItem("token")
-  const user = JSON.parse(localStorage.getItem("users"))
-  const admin = JSON.parse(localStorage.getItem("admins"))
+  const info = JSON.parse(localStorage.getItem("data"))
+
   // console.log(user?.uid)
   // console.log(token);
 
@@ -22,11 +22,11 @@ export default function StatusBar() {
     async function getStatus() {
       try {
         let apiUrl = '';
-
-        if (admin?.uid) {
-          apiUrl = `${URL}/admin/getbyid/${admin?.uid}`;
-        } else if (user?.uid) {
-          apiUrl = `${URL}/user/getbyid/${user?.uid}`;
+        let role = info.role
+        if (role === "admin") {
+          apiUrl = `${URL}/admin/getbyid/${info?.uid}`;
+        } else if (role === "user") {
+          apiUrl = `${URL}/user/getbyid/${info?.uid}`;
         } else {
           throw new Error('Invalid user or admin');
         }
@@ -45,7 +45,7 @@ export default function StatusBar() {
     }
 
     getStatus();
-  }, [user?.uid, admin?.uid]);
+  }, [info?.uid]);
 
   function countProjects(projects) {
     const total = projects.length;
@@ -63,7 +63,7 @@ export default function StatusBar() {
 
   return (
     <>
-      <h1 className='mx-9 my-1 text-2xl italic'>Status</h1>
+      <h1 className='mx-9 my-1 text-2xl  italic'>Status</h1>
       <div className='h-40 bg-stone-600 rounded-3xl mx-5 flex justify-around items-center p-5'>
         <div className='flex flex-col items-center'>
           <IoDocuments className='text-4xl text-purple-700 mb-2' />

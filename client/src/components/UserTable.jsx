@@ -5,11 +5,13 @@ import { MdDelete } from 'react-icons/md';
 import EditTable from '../pages/EditTable';
 import { UserContext } from "../../utils/UserContext.jsx"
 import config from "../../config.json"
+import DeleteModal from './DeleteModal.jsx';
 
 
 export default function Table() {
     const [projects, setProjects] = useState([]);
     const [showModal, setShowModal] = useState(false);
+    const [deleteModal, setDeleteModal] = useState(false);
     const [projectUid, setProjectUid] = useState('');
     const token = localStorage.getItem('token');
     const { count , setCount } = useContext(UserContext);
@@ -19,10 +21,10 @@ export default function Table() {
     useEffect(() => {
         async function getProjects() {
             try {
-                const user = JSON.parse(localStorage.getItem('users'));
+                const data = JSON.parse(localStorage.getItem('data'));
                 
-                if (user?.uid) {
-                    const response = await axios.get(`${URL}/user/getall/${user?.uid}/projects`, {
+                if (data?.uid) {
+                    const response = await axios.get(`${URL}/user/getall/${data?.uid}/projects`, {
                         headers: {
                             'access-token': token
                         }
@@ -30,7 +32,7 @@ export default function Table() {
                     setProjects(response.data.projects);
                     let projectCount = response.data.projects
                     let count1 = projectCount.length
-                    // setCount(count1)
+                    setCount(count1)
                     // console.log(count1);
                     // console.log(count);
                 }
@@ -41,20 +43,20 @@ export default function Table() {
         }
 
         getProjects();
-    }, []);
+    }, [[showModal]]);
 
     
 
     async function deleteProject(idToDelete) {
         try {
-            const user = JSON.parse(localStorage.getItem('users'));
-            if (user?.uid) {
-                const response = await axios.delete(`${URL}/user/delete/${user?.uid}/${idToDelete}/projects`, {
+            const data = JSON.parse(localStorage.getItem('data'));
+            if (data?.uid) {
+                const response = await axios.delete(`${URL}/user/delete/${data?.uid}/${idToDelete}/projects`, {
                     headers: {
                         'access-token': token
                     }
                 });
-                // console.log(response);
+                console.log(response.data.sucsess);
             }
 
 
@@ -68,13 +70,19 @@ export default function Table() {
         e.preventDefault();
         setShowModal(true)
         setProjectUid(id)
-        console.log(id);
+        // console.log(id);
+    }
+
+    function openDeleteModal(id) {
+        setProjectUid(id);
+        setDeleteModal(true);
     }
 
 
 
     return (
         <>
+        {deleteModal && <DeleteModal setDeleteModal={setDeleteModal} deleteFunction={() => deleteProject(projectUid)} />}
             <table className="min-w-full divide-y divide-gray-200 mt-4 mr-4">
                 <thead className="bg-gray-50">
                     <tr>
@@ -102,8 +110,7 @@ export default function Table() {
                             <td className="px-2 py-4 whitespace-nowrap">{project.endDate}</td>
                             <td className="px-2 py-4 whitespace-nowrap flex gap-2">
                                 <button onClick={(e)=>editProject(e,project.uid)} className='text-orange-500 cursor-pointer'><FaRegEdit /></button>
-                               
-                                <button onClick={() => deleteProject(project.uid)} className='text-red-700 cursor-pointer'><MdDelete /></button>
+                                <button onClick={() => openDeleteModal(project.uid)} className='text-red-700 cursor-pointer'><MdDelete /></button>
                             </td>
                         </tr>
                     ))}

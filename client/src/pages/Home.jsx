@@ -6,8 +6,8 @@ import axios from 'axios';
 import config from "../../config.json"
 
 export default function Home() {
-  const user = JSON.parse(localStorage.getItem('users'));
-  const admin = JSON.parse(localStorage.getItem('admins'));
+  const info = JSON.parse(localStorage.getItem('data'));
+
   const token = localStorage.getItem('token');
   const [data, setData] = useState({});
   const URL = config.URL
@@ -16,11 +16,11 @@ export default function Home() {
     async function getProfile() {
       try {
         let apiUrl = '';
-
-        if (admin?.uid) {
-          apiUrl = `${URL}/admin/getbyid/${admin?.uid}`;
-        } else if (user?.uid) {
-          apiUrl = `${URL}/user/getbyid/${user?.uid}`;
+        let role = info.role
+        if (role === "admin") {
+          apiUrl = `${URL}/admin/getbyid/${info?.uid}`;
+        } else if (role === "user") {
+          apiUrl = `${URL}/user/getbyid/${info?.uid}`;
         } else {
           throw new Error('Invalid user or admin');
         }
@@ -54,7 +54,7 @@ export default function Home() {
         <StatusBar />
         <div>
           <h1 className='mx-9 my-4 text-2xl italic'>Dashboard</h1>
-          <div>
+          <div className=' h-screen'>
             <BarChart />
           </div>
         </div>

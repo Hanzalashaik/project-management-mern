@@ -1,43 +1,41 @@
 // Import required modules
 import express from "express";
 import config from "config";
-import userRouter from "./controllers/userController.js"
-import adminRouter from "./controllers/adminController.js"
-import cors from "cors"
-
+import userRouter from "./controllers/userController.js";
+import adminRouter from "./controllers/adminController.js";
+import cors from "cors";
 
 import path from "path";
 import { fileURLToPath } from "url";
-const __filename = fileURLToPath(import.meta.url); 
-const __dirname = path.dirname(__filename); 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // DB Connect in Config Folder
 
 import "./utils/dbConnect.js";
-import authMiddleware from "./Middleware/users/authMiddleware.js";
-import publicUserRouter from "./controllers/public/user.js"
-import publicAdminRouter from "./controllers/public/admin.js"
+import authMiddleware from "./middleware/users/authMiddleware.js";
+import publicUserRouter from "./controllers/public/register.js";
+
 
 // Create an instance of Express
 const app = express();
-app.use(cors())
+app.use(cors());
 const PORT = process.env.PORT || config.get("PORT");
 
 // Middleware - Parse incoming requests as JSON
 app.use(express.json());
 
 app.use(express.static(path.join(__dirname, "dist")));
-// app.get("/*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "dist"));
-// });
 
-app.use('/public/user',publicUserRouter)
-app.use('/public/admin',publicAdminRouter)
+// API routes
+app.use("/public", publicUserRouter);
+app.use("/user", authMiddleware, userRouter);
+app.use("/admin", authMiddleware, adminRouter);
 
-// app.use(authMiddleware)
-
-app.use("/user",authMiddleware,userRouter);
-app.use("/admin",authMiddleware,adminRouter);
+// All other GET requests not handled before will return the React app
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
+});
 
 // // Handle 404 errors - Route not found
 // app.use((req, res, next) => {
