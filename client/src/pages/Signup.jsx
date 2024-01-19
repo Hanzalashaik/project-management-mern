@@ -55,10 +55,18 @@ export default function Signup() {
       console.log(response);
 
     } catch (error) {
-      const errorMessage = error.response.data.msg || "Something Went Wrong";
-      console.log(errorMessage);
-      setErrors(error.response.data.msg)
-  }
+      console.log(error);
+
+      const defaultErrorMessage1 = "Something went wrong";
+      const defaultErrorMessage2 = ".";
+
+      const errorMessage1 = error.response?.data?.error?.[0]?.msg || defaultErrorMessage1;
+      const errorMessage2 = error.response?.data?.msg || defaultErrorMessage2;
+    
+      const errorMessage = errorMessage1 ? `${errorMessage1}. ${errorMessage2}` : errorMessage2;
+
+      setErrors(errorMessage);
+    }
   }
   const notify = (successMsg) => {
     toast.success(successMsg || 'Registered Successfully', {

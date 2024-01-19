@@ -1,13 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function SideBar() {
     const data = JSON.parse(localStorage.getItem("data"));
-    // console.log(data.role);
+    const navigate = useNavigate();
 
     function logout() {
         localStorage.clear();
-        window.location.reload();
+        // Navigate to the login page after clearing local storage
+        navigate('/login');
+        setTimeout(()=>{
+            window.location.reload()
+        },2000)
     }
 
     return (
