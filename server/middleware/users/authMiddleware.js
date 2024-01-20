@@ -4,7 +4,7 @@ import config from "config"
 let authMiddleware = (req,res,next) =>{
     try {
         let token = req.headers["access-token"] || req.headers["authorization"];
-        console.log(token);
+        // console.log(token);
         
         if(!token){
             return res.status(401).json({msg:"Please Token diyo"})
@@ -13,7 +13,7 @@ let authMiddleware = (req,res,next) =>{
     
         let verify=jwt.verify(token,config.get("JWTKEY"));
 
-        console.log(verify);
+        // console.log(verify);
         req.user=verify
         next();       
         

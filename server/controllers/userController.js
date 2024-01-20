@@ -155,9 +155,9 @@ router.post("/addprojects/:userId/projects", async (req, res) => {
   try {
     const uid = req.params.userId;
     const projectData = req.body;
-    console.log(uid);
+    // console.log(uid);
     const user = await userModel.findOne({ uid });
-    console.log(user);
+    // console.log(user);
 
     if (!user) {
       return res.status(404).json({ success: "User not found" });

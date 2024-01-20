@@ -20,7 +20,10 @@ export default function EditTable({ setShowModal, projectUid }) {
     const [adminfullNames, setAdminFullNames] = useState([]);
     const [ProjectName, setProjectName] = useState('');
     const [desc, setDesc] = useState('');
+    const [StartDate, setStartDate] = useState('')
+    const [EndDate, setEndDate] = useState('')
 
+  
     useEffect(() => {
         async function getProjects() {
             let role = data.role;
@@ -34,8 +37,15 @@ export default function EditTable({ setShowModal, projectUid }) {
                 // Subtract 1 to convert 1-based index to 0-based index
                 let id = projectUid - 1;
 
-                setProjectName(response.data.projects[id]?.projectName || '');
-                setDesc(response.data.projects[id]?.description || '');
+                // Check if projects exist and have the expected structure
+                if (response.data.projects && Array.isArray(response.data.projects)) {
+                    setProjectName(response.data.projects[id]?.projectName || '');
+                    setDesc(response.data.projects[id]?.description || '');
+                    setStartDate(response.data.projects[id]?.startDate || '');
+                    setEndDate(response.data.projects[id]?.endDate || '');
+                } else {
+                    console.error('Unexpected response structure:', response.data);
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -112,7 +122,6 @@ export default function EditTable({ setShowModal, projectUid }) {
             endDate.current.value = '';
 
             handleCloseModal();
-            window.location.reload();
         } catch (error) {
             console.log(error);
         }
@@ -163,6 +172,7 @@ export default function EditTable({ setShowModal, projectUid }) {
                                         name="status"
                                         ref={status}
                                         id="status"
+                                 
                                         className="p-2 rounded border text-lg"
                                         required
                                     >
@@ -178,6 +188,7 @@ export default function EditTable({ setShowModal, projectUid }) {
                                     <select
                                         className="border rounded-md px-2 py-1 w-full focus:outline-none focus:border-blue-500"
                                         ref={createdBy}
+                  
                                         required
                                     >
                                         {userfullNames.map((userName, index) => (
@@ -197,6 +208,7 @@ export default function EditTable({ setShowModal, projectUid }) {
                                     <select
                                         className="border rounded-md px-2 py-1 w-full focus:outline-none focus:border-blue-500"
                                         ref={assignedTo}
+                            
                                         required
                                     >
                                         {userfullNames.map((userName, index) => (
@@ -216,6 +228,7 @@ export default function EditTable({ setShowModal, projectUid }) {
                                     <input
                                         className="border rounded-md px-2 py-1 w-full focus:outline-none focus:border-blue-500"
                                         ref={startDate}
+                                        defaultValue={StartDate}
                                         type="date"
                                         required
                                     />
@@ -225,6 +238,7 @@ export default function EditTable({ setShowModal, projectUid }) {
                                     <input
                                         className="border rounded-md px-2 py-1 w-full focus:outline-none focus:border-blue-500"
                                         ref={endDate}
+                                        defaultValue={EndDate}
                                         type="date"
                                         required
                                     />
