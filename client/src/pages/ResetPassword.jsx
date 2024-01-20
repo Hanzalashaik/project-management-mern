@@ -22,7 +22,8 @@ const ResetPassword = () => {
             try {
                 const token = new URLSearchParams(window.location.search).get('token');
                 console.log(token);
-                const userResponse = await axios.post(`${URL}/public/user/reset-password?token=${token}`, {
+
+                const userResponse = await axios.post(`${URL}/public/reset-password?token=${token}`, {
                     password,
                 });
                 if (userResponse?.status === 200) {
@@ -37,7 +38,7 @@ const ResetPassword = () => {
             } catch (error) {
                 const token = new URLSearchParams(window.location.search).get('token');
 
-                const adminResponse = await axios.post(`${URL}/public/admin/reset-password?token=${token}`, {
+                const adminResponse = await axios.post(`${URL}/public/reset-password?token=${token}`, {
                     password,
                 });
                 if (adminResponse?.status === 200) {

@@ -10,8 +10,8 @@ async function sendMail(emailData) {
       host: 'smtp.ethereal.email',
       port:587,
       auth: {
-        user: 'cora.sauer18@ethereal.email',
-        pass: 'sEu5x2tcs7ZUeHY1Nj'
+        user: 'cameron.schuster@ethereal.email',
+        pass: 'jt6tnzUNJCN3GQy7JP'
       },
     });
     let info = await transporter.sendMail({

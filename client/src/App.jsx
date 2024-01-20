@@ -28,7 +28,7 @@ export default function App() {
       <Route path="/forgetpassword" element={data ? <Navigate to="/" /> : <ForgetPassword />} />
       <Route path="/profile" element={data ? <ProfilePage /> : <Navigate to="/login" />} />
       <Route path="/edit" element={data ? <EditPage /> : <Navigate to="/login" />} />
-      <Route path="/reset-password" element={data ? <ResetPassword /> : <Navigate to="/login" />} />
+      <Route path="/reset-password" element={<ResetPassword /> }/>
     </Routes>
   </Router>
 </UserProvider>
