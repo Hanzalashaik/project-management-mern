@@ -1,9 +1,7 @@
 import adminModel from "../models/Admins.js";
-
 import express from "express";
-
-
 const router = express.Router();
+
 
 //GET ALL admin
 router.get("/getall", async (req, res) => {
