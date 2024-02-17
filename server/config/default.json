@@ -1,6 +1,6 @@
 {
     "PORT": 5000,
-    "URL":"http://192.168.0.99:5000",
+    "URL":"",
 
     "JWTKEY":"TOO",
     "CRYPTOKEY":"YOO",
@@ -14,9 +14,9 @@
         "PORT": 465
     },
     "SEND_SMS": {
-        "SID": "AC6a9a12288304fabbad7e31a5c1e1f05f",
-        "TOKEN": "7410a4051d825c7b1e7f44e8ae32a99c",
-        "NUMBER": "+16148083292"
+        "SID": "",
+        "TOKEN": "",
+        "NUMBER": ""
     },
-    "DB_URI": "mongodb+srv://Hanzala:kali@express-js.gwzmvdl.mongodb.net/projectManagement"
+    "DB_URI": ""
 }
