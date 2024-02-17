@@ -1,6 +1,6 @@
 {
     "PORT": 5001,
-    "URL": "https://project.hanzala.site",
+    "URL": "FRONTEND_URL",
     "JWTKEY": "TOO",
     "CRYPTOKEY": "YOO",
     "EMAIL_SMTP": {
@@ -12,9 +12,9 @@
         "PORT": 465
     },
     "SEND_SMS": {
-        "SID": "AC6a9a12288304fabbad7e31a5c1e1f05f",
-        "TOKEN": "7410a4051d825c7b1e7f44e8ae32a99c",
-        "NUMBER": "+16148083292"
+        "SID": "SID_NUMBER",
+        "TOKEN": "YOUR_TOKEN",
+        "NUMBER": "NUMBER"
     },
-    "DB_URI": "mongodb+srv://Hanzala:kali@express-js.gwzmvdl.mongodb.net/projectManagement"
+    "DB_URI": "YOUR_URI"
 }
