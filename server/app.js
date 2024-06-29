@@ -16,7 +16,6 @@ import "./utils/dbConnect.js";
 import authMiddleware from "./middleware/users/authMiddleware.js";
 import publicUserRouter from "./controllers/public/register.js";
 
-
 // Create an instance of Express
 const app = express();
 app.use(cors());
@@ -38,15 +37,15 @@ app.get("*", (req, res) => {
 });
 
 // // Handle 404 errors - Route not found
-// app.use((req, res, next) => {
-//   res.status(404).send("404 - Route Not Found");
-// });
+app.use((req, res, next) => {
+  res.status(404).send("404 - Route Not Found");
+});
 
 // Handle other errors
-// app.use((err, req, res, next) => {
-//   console.error(err.stack);
-//   res.status(500).send("500 - Internal Server Error");
-// });
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send("500 - Internal Server Error");
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on PORT 🚀 ${PORT}`);
